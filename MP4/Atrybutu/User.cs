@@ -6,6 +6,7 @@ namespace MP4.Atrybutu
 {
     class User
     {
+        private int usernameChangesLeft = 2;
         private string username;
         public string Username
         {
@@ -15,12 +16,19 @@ namespace MP4.Atrybutu
             }
             set
             {
-                username = value;
+                if (usernameChangesLeft == 0)
+                {
+                    throw new Exception("You already changed your username once");
+                }
+                else
+                {
+                    username = value;
+                    usernameChangesLeft--;
+                }
             }
         }
 
-        private string password
-            ;
+        private string password;
         public string Password
         {
             get
@@ -55,6 +63,15 @@ namespace MP4.Atrybutu
             this.Username = username;
             this.Password = password;
             this.CreationDate = creationDate;
+        }
+
+        public void ChangeUsername(String newUsername)
+        {
+            if (Username == newUsername)
+            {
+                throw new Exception("Usernames must be different");
+            }
+            Username = newUsername;
         }
     }
 }
