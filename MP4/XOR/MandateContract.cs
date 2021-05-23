@@ -80,6 +80,16 @@ namespace MP4.XOR
             Employee.SignMandateContract(this);
         }
 
+        public bool CheckValidity ()
+        {
+            if (endDate < DateTime.Now)
+            {
+                Terminate();
+                return false;
+            }
+            else return true; 
+        }
+
         public void Terminate()
         {
             employee.MandateContract = null;

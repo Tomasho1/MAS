@@ -79,7 +79,11 @@ namespace MP4.XOR
         {
             if (mandateContract != null)
             {
-                throw new Exception("Employee has a valid mandate contract!");
+                if (mandateContract.CheckValidity())
+                {
+                    throw new Exception("Employee has a valid mandate contract!");
+                }
+                else EmploymentContract = employmentContract;
             }
             else if (employmentContract.Employee != this)
             {
@@ -91,7 +95,11 @@ namespace MP4.XOR
         {
             if (employmentContract != null)
             {
-                throw new Exception("Employee has a valid employment contract!");
+                if (employmentContract.CheckValidity())
+                {
+                    throw new Exception("Employee has a valid employment contract!");
+                }
+                else MandateContract = mandateContract;
             }
             else if (mandateContract.Employee != this)
             {

@@ -44,6 +44,19 @@ namespace MP4.XOR
             }
         }
 
+        private DateTime endDate;
+        public DateTime EndDate
+        {
+            get
+            {
+                return endDate;
+            }
+            set
+            {
+                endDate = value;
+            }
+        }
+
         private int hoursPerWeek;
         public int HoursPerWeek
         {
@@ -83,15 +96,26 @@ namespace MP4.XOR
             }
         }
 
-        public EmploymentContract(string position, double salary, DateTime startDate, int hoursPerWeek, int noticePeriod, Employee employee)
+        public EmploymentContract(string position, double salary, DateTime startDate, DateTime endDate, int hoursPerWeek, int noticePeriod, Employee employee)
         {
             this.Position = position;
             this.Salary = salary;
             this.StartDate = startDate;
+            this.EndDate = endDate;
             this.HoursPerWeek = hoursPerWeek;
             this.NoticePeriod = noticePeriod;
             this.Employee = employee;
             Employee.SignEmploymentContract(this);
+        }
+
+        public bool CheckValidity()
+        {
+            if (endDate < DateTime.Now)
+            {
+                Terminate();
+                return false;
+            }
+            else return true;
         }
 
         public void Terminate()

@@ -80,8 +80,8 @@ namespace MP4
             Console.WriteLine("---Ograniczenie XOR---\n");
 
             Employee e1 = new Employee("Marek", "Nowak", new DateTime(1996, 10, 17));
-            EmploymentContract ec1 = new EmploymentContract("Junior C# Developer", 3000, new DateTime(2021, 09, 17), 40, 90, e1);
-            MandateContract mc1 = new MandateContract("Create mobile app", 5000, new DateTime(2021, 05, 13), new DateTime(2021, 08, 13), e1); //błąd, pracownik ma już umowę o pracę
+            EmploymentContract ec1 = new EmploymentContract("Junior C# Developer", 3000, new DateTime(2021, 03, 15), new DateTime(2024, 03, 15), 40, 90, e1);
+            MandateContract mc1 = new MandateContract("Create mobile app", 5000, new DateTime(2021, 05, 13), new DateTime(2021, 08, 13), e1); //błąd, pracownik ma już ważną umowę o pracę
         }
     }
 }
