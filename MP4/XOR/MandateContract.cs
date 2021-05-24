@@ -80,7 +80,7 @@ namespace MP4.XOR
             Employee.SignMandateContract(this);
         }
 
-        public bool CheckValidity ()
+        public bool ValidationCheck ()
         {
             if (endDate < DateTime.Now)
             {
@@ -92,6 +92,10 @@ namespace MP4.XOR
 
         public void Terminate()
         {
+            if (Employee.MandateContract == null)
+            {
+                throw new Exception("No mandate contract signed for this employee");
+            }
             employee.MandateContract = null;
         }
     }

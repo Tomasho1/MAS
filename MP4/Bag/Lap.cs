@@ -64,8 +64,8 @@ namespace MP4.Bag
             this.Circuit = circuit;
             this.Laptime = laptime;
             this.Time = time;
-            driver.AddTime(circuit, laptime);
-            circuit.AddTime(driver, laptime);
+            driver.AddTime(circuit, this);
+            circuit.AddTime(driver, this);
         }
 
 

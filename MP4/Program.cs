@@ -29,15 +29,19 @@ namespace MP4
             //Ograniczenie ordered//
 
             Line l1 = new Line(179, LineType.Normal);
+            Line l2 = new Line(192, LineType.Normal);
             Stop st1 = new Stop("Os.Kabaty", 2);
             Stop st2 = new Stop("Metro Kabaty", 4);
             Stop st3 = new Stop("Mielczarskiego", 1);
 
             l1.AddStop(st1);
+            l2.AddStop(st1);
             l1.AddStop(st2);
             l1.AddStop(st3);
+            //l1.AddStop(st3); błąd, drugie dodanie tej samej stacji do linii 
 
             Console.WriteLine(l1.ShowStops());
+            Console.WriteLine(st1.ShowLines() + "\n");
 
             Console.WriteLine("---Ograniczenie bag---\n");
 
@@ -75,13 +79,13 @@ namespace MP4
             t1.SignPlayer(p2);
             t1.SetCaptain(p2);
 
-            Console.WriteLine(t1.GetCaptainInfo());
+            Console.WriteLine(t1.GetCaptainInfo() + "\n");
 
-            Console.WriteLine("---Ograniczenie XOR---\n");
+            //Ograniczenie XOR/
 
             Employee e1 = new Employee("Marek", "Nowak", new DateTime(1996, 10, 17));
             EmploymentContract ec1 = new EmploymentContract("Junior C# Developer", 3000, new DateTime(2021, 03, 15), new DateTime(2024, 03, 15), 40, 90, e1);
-            MandateContract mc1 = new MandateContract("Create mobile app", 5000, new DateTime(2021, 05, 13), new DateTime(2021, 08, 13), e1); //błąd, pracownik ma już ważną umowę o pracę
+            //MandateContract mc1 = new MandateContract("Create mobile app", 5000, new DateTime(2021, 05, 13), new DateTime(2021, 08, 13), e1); //błąd, pracownik ma już ważną umowę o pracę
         }
     }
 }

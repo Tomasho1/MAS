@@ -45,24 +45,24 @@ namespace MP4.Atrybutu
             }
         }
 
-        private DateTime creationDate;
-        public DateTime CreationDate
+        private DateTime registrationDate;
+        public DateTime RegistrationDate
         {
             get
             {
-                return creationDate;
+                return registrationDate;
             }
             set
             {
-                creationDate = value;
+                registrationDate = value;
             }
         }
 
-        public User(String username, String password, DateTime creationDate)
+        public User(String username, String password, DateTime registrationDate)
         {
             this.Username = username;
             this.Password = password;
-            this.CreationDate = creationDate;
+            this.RegistrationDate = registrationDate;
         }
 
         public void ChangeUsername(String newUsername)

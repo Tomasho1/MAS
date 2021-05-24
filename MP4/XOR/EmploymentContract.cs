@@ -108,7 +108,7 @@ namespace MP4.XOR
             Employee.SignEmploymentContract(this);
         }
 
-        public bool CheckValidity()
+        public bool ValidationCheck()
         {
             if (endDate < DateTime.Now)
             {
@@ -120,7 +120,11 @@ namespace MP4.XOR
 
         public void Terminate()
         {
-            employee.EmploymentContract = null;
+            if (Employee.EmploymentContract == null)
+            {
+                throw new Exception("No employment contract signed for this employee");
+            }
+            Employee.EmploymentContract = null;
         } 
     }
 }

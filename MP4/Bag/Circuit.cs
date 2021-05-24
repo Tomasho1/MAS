@@ -43,7 +43,7 @@ namespace MP4.Bag
             }
         }
 
-        private List<KeyValuePair<Driver, TimeSpan>> times = new List<KeyValuePair<Driver, TimeSpan>>();
+        private List<KeyValuePair<Driver, Lap>> times = new List<KeyValuePair<Driver, Lap>>();
 
         public Circuit(String name, double length, int turns)
         {
@@ -52,18 +52,18 @@ namespace MP4.Bag
             this.Turns = turns;
         }
 
-        public void AddTime(Driver driver, TimeSpan laptime)
+        public void AddTime(Driver driver, Lap lap)
         {
-            times.Add(new KeyValuePair<Driver, TimeSpan>(driver, laptime));
+            times.Add(new KeyValuePair<Driver, Lap>(driver, lap));
         }
 
         public string ShowTimes()
         {
             string info = "";
 
-            foreach (KeyValuePair<Driver, TimeSpan> driverPair in times) 
+            foreach (KeyValuePair<Driver, Lap> driverPair in times) 
             {
-                info += $"Driver: {driverPair.Key.Firstname} {driverPair.Key.Lastname}, time: {driverPair.Value.Minutes}:{driverPair.Value.Seconds}:{driverPair.Value.Milliseconds}\n";
+                info += $"Driver: {driverPair.Key.Firstname} {driverPair.Key.Lastname}, time: {driverPair.Value.Laptime.Minutes}:{driverPair.Value.Laptime.Seconds}:{driverPair.Value.Laptime.Milliseconds}\n";
             }
 
             return info;

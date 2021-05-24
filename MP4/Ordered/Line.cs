@@ -44,10 +44,13 @@ namespace MP4.Ordered
         {
             if (Stops.Contains(stop))
             {
-                throw new Exception("This stop is already added to line");
+                throw new Exception($"This stop is already added to line {this.Number}");
             }
-
-            else Stops.Add(stop);
+            else
+            {
+                Stops.Add(stop);
+                stop.AddLine(this);
+            }
         }
 
         public string ShowStops()

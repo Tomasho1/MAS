@@ -44,7 +44,7 @@ namespace MP4.Bag
             }
         }
 
-        private List<KeyValuePair<Circuit, TimeSpan>> times = new List<KeyValuePair<Circuit, TimeSpan>>();
+        private List<KeyValuePair<Circuit, Lap>> times = new List<KeyValuePair<Circuit, Lap>>();
 
         public Driver(String firstname, String lastname, String nationality)
         {
@@ -53,18 +53,18 @@ namespace MP4.Bag
             this.Nationality = nationality;
         }
 
-        public void AddTime(Circuit circuit, TimeSpan laptime)
+        public void AddTime(Circuit circuit, Lap lap)
         {
-            times.Add(new KeyValuePair<Circuit, TimeSpan>(circuit, laptime));
+            times.Add(new KeyValuePair<Circuit, Lap>(circuit, lap));
         }
 
         public string ShowTimes()
         {
             string info = "";
 
-            foreach (KeyValuePair<Circuit, TimeSpan> circuitPair in times)
+            foreach (KeyValuePair<Circuit, Lap> circuitPair in times)
             {
-                info += $"Circuit: {circuitPair.Key.Name}, time: {circuitPair.Value.Minutes}:{circuitPair.Value.Seconds}:{circuitPair.Value.Milliseconds}\n";
+                info += $"Circuit: {circuitPair.Key.Name}, time: {circuitPair.Value.Laptime.Minutes}:{circuitPair.Value.Laptime.Seconds}:{circuitPair.Value.Laptime.Milliseconds}\n";
             }
 
             return info;
@@ -74,7 +74,7 @@ namespace MP4.Bag
         {
             int laps = times.Count(x => x.Key == circuit);
 
-            return $"Driver: {this.Firstname} {this.Lastname} made {laps} laps on {circuit.Name}\n";
+            return $"{this.Firstname} {this.Lastname} made {laps} laps on {circuit.Name}\n";
         }
     }
 }
