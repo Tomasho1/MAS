@@ -88,10 +88,6 @@ namespace MP1
                 }
                 return age;
             }
-            set
-            {
-                age = value;
-            }
         }
 
         private Dictionary<string, int> ratings;
@@ -130,32 +126,32 @@ namespace MP1
             this.Birthdate = birthdate;
             this.Ratings = ratings;
             this.Title = title;
-            addPlayer(this);
+            AddPlayer(this);
         }
 
         //Extent methods
-        public static List<Player> getExtent()
+        public static List<Player> GetExtent()
         {
             return extent;
         }
-        public static void showExtent()
+        public static void ShowExtent()
         {
             foreach (Player player in extent)
             {
                 Console.WriteLine(player + "\n");
             }
         }
-        public void addPlayer(Player player)
+        public void AddPlayer(Player player)
         {
             extent.Add(player);
         }
 
-        public void removePlayer(Player player)
+        public void RemovePlayer(Player player)
         {
             extent.Remove(player);
         }
 
-        public static void saveExtent()
+        public static void SaveExtent()
         {
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream("Extent.bin", FileMode.Create, FileAccess.Write, FileShare.None);
@@ -163,7 +159,7 @@ namespace MP1
             stream.Close();
         }
 
-        public static void readExtent()
+        public static void ReadExtent()
         {
             try
             {
@@ -171,7 +167,7 @@ namespace MP1
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream("Extent.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
                 extent = (List<Player>)formatter.Deserialize(stream);
-                showExtent();
+                ShowExtent();
                 stream.Close();
             }
             catch (FileNotFoundException exc)
@@ -193,7 +189,7 @@ namespace MP1
 
         //Overloaded method
         //All 3 categories at the same time
-        public string showPlayerPosition()
+        public string ShowPlayerPosition()
         {
             var standardRanking = new List<PlayerRanking>();
             var blitzRanking = new List<PlayerRanking>();
@@ -225,7 +221,7 @@ namespace MP1
         }
 
         //One chosen category
-        public string showPlayerPosition(string category)
+        public string ShowPlayerPosition(string category)
         {
             if (extent.Count == 0)
             {
@@ -249,7 +245,7 @@ namespace MP1
         }
 
         //General rankings for category
-        public static string showWorldRankings(string category)
+        public static string ShowWorldRankings(string category)
         {
             if (extent.Count == 0)
             {

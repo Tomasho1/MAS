@@ -46,11 +46,11 @@ namespace MP1
 
             //Testing methods
             Console.WriteLine(player1.ToString());
-            Console.WriteLine("\n" + player2.showPlayerPosition());
-            Console.WriteLine("\n" + Player.showWorldRankings("Blitz"));
+            Console.WriteLine("\n" + player2.ShowPlayerPosition());
+            Console.WriteLine("\n" + Player.ShowWorldRankings("Blitz"));
 
 
-            Player.saveExtent();
+            Player.SaveExtent();
             //Player.readExtent();
 
             
