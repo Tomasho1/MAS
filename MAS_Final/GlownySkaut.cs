@@ -4,7 +4,8 @@ using System.Text;
 
 namespace MAS_Final
 {
-    class GlownySkaut : Pracownik
+    [Serializable]
+    public class GlownySkaut : Pracownik
     {
         private Prezes prezes;
         public Prezes Prezes
@@ -31,16 +32,49 @@ namespace MAS_Final
                 dataPromocji = value;
             }
         }
-        public GlownySkaut(String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, Prezes prezes, DateTime dataPromocji) : base(imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+
+        public GlownySkaut(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, Prezes prezes, DateTime dataPromocji) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
         {
-            this.Prezes = prezes;
-            this.dataPromocji = dataPromocji;
+            Prezes = prezes;
+            DataPromocji = dataPromocji;
+            klub.DodajGlownegoSkauta(this);
         }
 
-        public GlownySkaut(Pracownik pracownik, Prezes prezes, DateTime dataPromocji) : base(pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
+        public GlownySkaut(Skaut skaut, Prezes prezes, DateTime dataPromocji) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.DataUrodzenia, skaut.DataZatrudnienia, skaut.Pensja)
         {
-            this.Prezes = prezes;
-            this.dataPromocji = dataPromocji;
+            Klub klub = skaut.Klub;
+            klub.UsunPracownika(skaut);
+            Skaut.Extent.Remove(skaut);
+            Prezes = prezes;
+            DataPromocji = dataPromocji;
+            klub.DodajGlownegoSkauta(this);
+        }
+
+        public GlownySkaut(Prezes byly, Prezes prezes, DateTime dataPromocji) : base(prezes.Klub, prezes.Imie, prezes.Nazwisko, prezes.DataUrodzenia, prezes.DataZatrudnienia, prezes.Pensja)
+        {
+            Klub klub = byly.Klub;
+            Prezes = prezes;
+            DataPromocji = dataPromocji;
+            klub.DodajGlownegoSkauta(this);
+        }
+
+        public GlownySkaut(Dyrektor dyrektor, Prezes prezes, DateTime dataPromocji) : base(dyrektor.Klub, dyrektor.Imie, dyrektor.Nazwisko, dyrektor.DataUrodzenia, dyrektor.DataZatrudnienia, dyrektor.Pensja)
+        {
+            Klub klub = dyrektor.Klub;
+            klub.UsunPracownika(dyrektor);
+            Dyrektor.Extent.Remove(dyrektor);
+            Prezes = prezes;
+            DataPromocji = dataPromocji;
+            klub.DodajGlownegoSkauta(this);
+        }
+
+        public void ZmienStatusZawodnika(Zawodnik zawodnik, StatusZawodnika status)
+        {
+            if (zawodnik.Status != "PoObserwacji")
+            {
+                throw new Exception("Nie możesz zmienić statusu tego zawodnika");
+            }
+            zawodnik.Status = status.ToString();
         }
     }
 }

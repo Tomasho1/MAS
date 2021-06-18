@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MAS_Final
 {
+    [Serializable]
     public abstract class Pracownik
     {
         private static int idOstatniPracownik = 0;
@@ -146,7 +147,7 @@ namespace MAS_Final
             }
         }
 
-        public Pracownik(String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja)
+        public Pracownik(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja)
         {
             idOstatniPracownik++;
             IdPracownik = idOstatniPracownik;
@@ -156,5 +157,28 @@ namespace MAS_Final
             DataZatrudnienia = dataZatrudnienia;
             Pensja = pensja;
         }
+
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Pracownik pracownik = (Pracownik)obj;
+
+                if (this.Klub == pracownik.Klub && this.Imie == pracownik.Imie && this.Nazwisko == pracownik.Nazwisko && this.Narodowosc == pracownik.Narodowosc && this.dataUrodzenia == pracownik.DataUrodzenia && this.dataZatrudnienia == pracownik.DataZatrudnienia && this.pensja == pracownik.Pensja)
+                {
+                    return true;
+                }
+                else return false;
+            }
+        }
+        public override int GetHashCode()
+        {
+            return new {Klub, Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, Pensja}.GetHashCode();
+        }
     }
-}
+    }
+

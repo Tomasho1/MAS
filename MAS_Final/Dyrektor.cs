@@ -8,23 +8,37 @@ namespace MAS_Final
         Sportowy, 
         Transferowy
     }
+
+    [Serializable]
     public class Dyrektor : Pracownik
     {
-        private string typ;
-        public string Typ
+        private bool dyrektorSportowy;
+        public bool DyrektorSportowy
         {
             get
             {
-                return typ;
+                return dyrektorSportowy;
             }
             set
             {
-                typ = value;
+                dyrektorSportowy = value;
             }
         }
 
-        private List<Kosztorys> kosztorysy;
+        private bool dyrektorTransferowy;
+        public bool DyrektorTransferowy
+        {
+            get
+            {
+                return dyrektorTransferowy;
+            }
+            set
+            {
+                dyrektorTransferowy = value;
+            }
+        }
 
+        private List<Kosztorys> kosztorysy = new List<Kosztorys>();
         public List<Kosztorys> Kosztorysy
         {
             get
@@ -37,19 +51,123 @@ namespace MAS_Final
             }
         }
 
-        public Dyrektor(String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, TypDyrektora typ) : base(imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        private static List<Dyrektor> extent = new List<Dyrektor>();
+
+        public static List<Dyrektor> Extent
         {
-            this.Typ = typ.ToString();
+            get
+            {
+                return extent;
+            }
+            set
+            {
+                extent = value;
+            }
         }
 
-        public Dyrektor(Pracownik pracownik, TypDyrektora typ) : base(pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
+        public Dyrektor(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
         {
-            this.Typ = typ.ToString();
+            if (stanowiska.Contains(TypDyrektora.Sportowy))
+            {
+                DyrektorSportowy = true;
+            }
+
+            if (stanowiska.Contains(TypDyrektora.Transferowy))
+            {
+                DyrektorTransferowy = true;
+            }
+
+            if (stanowiska.Contains(TypDyrektora.Sportowy) && stanowiska.Contains(TypDyrektora.Transferowy))
+            {
+                DyrektorSportowy = true; 
+                DyrektorTransferowy = true;
+            }
+            extent.Add(this);
+            klub.DodajPracownika(this);
         }
 
+        public Dyrektor(Skaut skaut, List<TypDyrektora> stanowiska) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.DataUrodzenia, skaut.DataZatrudnienia, skaut.Pensja)
+        {
+            Klub klub = skaut.Klub;
+            klub.UsunPracownika(skaut);
+            if (stanowiska.Contains(TypDyrektora.Sportowy))
+            {
+                DyrektorSportowy = true;
+            }
+
+            if (stanowiska.Contains(TypDyrektora.Transferowy))
+            {
+                DyrektorTransferowy = true;
+            }
+
+            if (stanowiska.Contains(TypDyrektora.Sportowy) && stanowiska.Contains(TypDyrektora.Transferowy))
+            {
+                DyrektorSportowy = true;
+                DyrektorTransferowy = true;
+            }
+            extent.Add(this);
+            klub.DodajPracownika(this);
+        }
+
+        public Dyrektor(GlownySkaut glownySkaut, List<TypDyrektora> stanowiska) : base(glownySkaut.Klub, glownySkaut.Imie, glownySkaut.Nazwisko, glownySkaut.DataUrodzenia, glownySkaut.DataZatrudnienia, glownySkaut.Pensja)
+        {
+            Klub klub = glownySkaut.Klub;
+            klub.UsunGlownegoSkauta(glownySkaut);
+            if (stanowiska.Contains(TypDyrektora.Sportowy))
+            {
+                DyrektorSportowy = true;
+            }
+
+            if (stanowiska.Contains(TypDyrektora.Transferowy))
+            {
+                DyrektorTransferowy = true;
+            }
+
+            if (stanowiska.Contains(TypDyrektora.Sportowy) && stanowiska.Contains(TypDyrektora.Transferowy))
+            {
+                DyrektorSportowy = true;
+                DyrektorTransferowy = true;
+            }
+            extent.Add(this);
+            klub.DodajPracownika(this);
+        }
+
+        public Dyrektor(Prezes prezes, List<TypDyrektora> stanowiska) : base(prezes.Klub, prezes.Imie, prezes.Nazwisko, prezes.DataUrodzenia, prezes.DataZatrudnienia, prezes.Pensja)
+        {
+            Klub klub = prezes.Klub;
+            klub.UsunPrezesa(prezes);
+            if (stanowiska.Contains(TypDyrektora.Sportowy))
+            {
+                DyrektorSportowy = true;
+            }
+
+            if (stanowiska.Contains(TypDyrektora.Transferowy))
+            {
+                DyrektorTransferowy = true;
+            }
+
+            if (stanowiska.Contains(TypDyrektora.Sportowy) && stanowiska.Contains(TypDyrektora.Transferowy))
+            {
+                DyrektorSportowy = true;
+                DyrektorTransferowy = true;
+            }
+            extent.Add(this);
+            klub.DodajPracownika(this);
+        }
+
+
+        public void WydajOpinie(Zawodnik zawodnik, Opinia opinia)
+        {
+            if (zawodnik.Status == "ZawieszenieObserwacji")
+            {
+                throw new Exception("Nie możesz wydać opinii dla tego zawodnika");
+            }
+
+            zawodnik.Opinia = opinia.ToString();
+        }
         public Kosztorys StworzKosztorys(Zawodnik zawodnik, double szacowanaCena, double szacowanaPensja)
         {
-            if(this.Typ == TypDyrektora.Sportowy.ToString())
+            if(!DyrektorSportowy)
             {
                 throw new Exception("Tylko dyrektor sportowy może tworzyć kosztorys");
             }

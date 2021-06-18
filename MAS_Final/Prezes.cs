@@ -27,7 +27,6 @@ namespace MAS_Final
             {
                 return poczatekKadencji.AddYears(base.Klub.DlugoscKadencjiPrezesa);
             }
-
         }
 
         private List<Decyzja> decyzje;
@@ -44,21 +43,43 @@ namespace MAS_Final
             }
         }
 
-        public Prezes(String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji) : base(imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        public Prezes(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
         {
-            this.PoczatekKadencji = poczatekKadencji;
+            PoczatekKadencji = poczatekKadencji;
+            klub.DodajPrezesa(this);
         }
 
-        public Prezes(Pracownik pracownik, DateTime poczatekKadencji) : base(pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
+        public Prezes(GlownySkaut glownySkaut, DateTime poczatekKadencji) : base(glownySkaut.Klub, glownySkaut.Imie, glownySkaut.Nazwisko, glownySkaut.DataUrodzenia, glownySkaut.DataZatrudnienia, glownySkaut.Pensja)
         {
-            this.PoczatekKadencji = poczatekKadencji;
+            Klub klub = glownySkaut.Klub;
+            klub.UsunGlownegoSkauta(glownySkaut);
+            PoczatekKadencji = poczatekKadencji;
+            klub.DodajPrezesa(this);
         }
 
-        public void AwansujSkauta(Skaut skaut)
+        public Prezes(Skaut skaut, DateTime poczatekKadencji) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.DataUrodzenia, skaut.DataZatrudnienia, skaut.Pensja)
         {
-
+            Klub klub = skaut.Klub;
+            klub.UsunPracownika(skaut);
+            Skaut.Extent.Remove(skaut);
+            PoczatekKadencji = poczatekKadencji;
+            klub.DodajPrezesa(this);
         }
 
+        public Prezes(Dyrektor dyrektor, DateTime poczatekKadencji) : base(dyrektor.Klub, dyrektor.Imie, dyrektor.Nazwisko, dyrektor.DataUrodzenia, dyrektor.DataZatrudnienia, dyrektor.Pensja)
+        {
+            Klub klub = dyrektor.Klub;
+            klub.UsunPracownika(dyrektor);
+            Dyrektor.Extent.Remove(dyrektor);
+            PoczatekKadencji = poczatekKadencji;
+            klub.DodajPrezesa(this);
+        }
+
+        public GlownySkaut AwansujSkauta(Skaut skaut)
+        {
+            GlownySkaut glownySkaut = new GlownySkaut(skaut, this, DateTime.Now);
+            return glownySkaut;
+        }
         public Decyzja PodejmijDecyzje(Zawodnik zawodnik, TypDecyzji typ, String komentarz)
         {
             if (zawodnik.Kosztorys == null)

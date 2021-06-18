@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MAS_Final
 {
+    [Serializable]
     public class Mecz
     {
         private static int idOstatniMecz = 0;
@@ -73,6 +74,20 @@ namespace MAS_Final
             }
         }
 
+        private static List<Mecz> extent = new List<Mecz>();
+
+        public static List<Mecz> Extent
+        {
+            get
+            {
+                return extent;
+            }
+            set
+            {
+                extent = value;
+            }
+        }
+
         public Mecz(DateTime dataRozegrania, string gospodarz, string gosc, string wynik)
         {
             idOstatniMecz++;
@@ -81,6 +96,7 @@ namespace MAS_Final
             Gospodarz = gospodarz;
             Gosc = gosc;
             Wynik = wynik;
+            extent.Add(this);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace MAS_Final
 {
+    [Serializable]
     public class Klub
     {
         private static int idOstatniKlub = 0;
@@ -101,7 +102,35 @@ namespace MAS_Final
             }
         }
 
-        private List<Pracownik> pracownicy;
+        private Prezes? prezes;
+
+        public Prezes? Prezes
+        {
+            get
+            {
+                return prezes;
+            }
+            set
+            {
+                prezes = value;
+            }
+        }
+
+        private GlownySkaut? glownySkaut;
+
+        public GlownySkaut? GlownySkaut
+        {
+            get
+            {
+                return glownySkaut;
+            }
+            set
+            {
+                glownySkaut = value;
+            }
+        }
+
+        private List<Pracownik> pracownicy = new List<Pracownik>();
 
         public List<Pracownik> Pracownicy
         {
@@ -115,6 +144,20 @@ namespace MAS_Final
             }
         }
 
+        private static List<Klub> extent = new List<Klub>();
+
+        public static List<Klub> Extent
+        {
+            get
+            {
+                return extent;
+            }
+            set
+            {
+                extent = value;
+            }
+        }
+
         public Klub(String nazwa, String krajPochodzenia, String stadion, int rokZalozenia, String aktualnyPoziomRozgrywkowy, int dlugoscKadencjiPrezesa)
         {
             idOstatniKlub++;
@@ -125,6 +168,55 @@ namespace MAS_Final
             RokZalozenia = rokZalozenia;
             AktualnyPoziomRozgrywkowy = aktualnyPoziomRozgrywkowy;
             DlugoscKadencjiPrezesa = dlugoscKadencjiPrezesa;
+            extent.Add(this);
+        }
+
+        public void DodajPrezesa(Prezes prezes)
+        {
+            if(Prezes == prezes)
+            {
+                throw new Exception("Osoba już jest prezesem");
+            }
+
+            if (Prezes != null)
+            {
+                throw new Exception("Klub już ma prezesa");
+            }
+
+            Prezes = prezes;
+        }
+
+        public void UsunPrezesa(Prezes prezes)
+        {
+            if (Prezes != prezes)
+            {
+                throw new Exception("Osoba nie jest prezesem");
+            }
+            Prezes = null;
+        }
+
+        public void DodajGlownegoSkauta(GlownySkaut glownySkaut)
+        {
+            if (GlownySkaut == glownySkaut)
+            {
+                throw new Exception("Osoba już jest głównym skautem");
+            }
+
+            if (GlownySkaut != null)
+            {
+                throw new Exception("Klub już ma głównego skauta");
+            }
+
+            GlownySkaut = glownySkaut;
+        }
+
+        public void UsunGlownegoSkauta(GlownySkaut glownySkaut)
+        {
+            if (GlownySkaut != glownySkaut)
+            {
+                throw new Exception("Osoba nie jest głównym skautem");
+            }
+            GlownySkaut = null;
         }
 
         public void DodajPracownika(Pracownik pracownik)
@@ -134,7 +226,6 @@ namespace MAS_Final
                 throw new Exception("Pracownik jest już zatrudniony w tym klubie");
             }
             pracownicy.Add(pracownik);
-            pracownik.Klub = this;
         }
 
         public void UsunPracownika(Pracownik pracownik)

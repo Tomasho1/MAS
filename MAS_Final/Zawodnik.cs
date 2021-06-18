@@ -19,7 +19,9 @@ namespace MAS_Final
         Pozytywna,
         Negatywna
     }
-    public class Zawodnik : Helper
+
+    [Serializable]
+    public class Zawodnik
     {
 
         private static int idOstatniZawodnik = 0;
@@ -184,7 +186,7 @@ namespace MAS_Final
             }
         }
 
-        private List<KeyValuePair<Zawodnik, Raport>> raporty;
+        private List<KeyValuePair<Zawodnik, Raport>> raporty = new List<KeyValuePair<Zawodnik, Raport>>();
         public List<KeyValuePair<Zawodnik, Raport>> Raporty
         {
             get
@@ -198,7 +200,7 @@ namespace MAS_Final
             }
         }
 
-        private static List<Zawodnik> extent;
+        public static List<Zawodnik> extent = new List<Zawodnik>();
 
         public static List<Zawodnik> Extent
         {

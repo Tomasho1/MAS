@@ -1,5 +1,9 @@
-﻿namespace MAS_Final
+﻿using System;
+using System.Collections.Generic;
+
+namespace MAS_Final
 {
+    [Serializable]
     public class Kosztorys
     {
 
@@ -72,6 +76,19 @@
             }
         }
 
+        private static List<Kosztorys> extent = new List<Kosztorys>();
+        public static List<Kosztorys> Extent
+        {
+            get
+            {
+                return extent;
+            }
+            set
+            {
+                extent = value;
+            }
+        }
+
         public Kosztorys(Dyrektor dyrektor, Zawodnik zawodnik, double szacowanaCena, double szacowanaPensja)
         {
             idOstatniKosztorys++;
@@ -80,6 +97,8 @@
             Zawodnik = zawodnik;
             SzacowanaCena = szacowanaCena;
             SzacowanaPensja = szacowanaPensja;
+            extent.Add(this);
+            zawodnik.Kosztorys = this;
         }
     }
 }

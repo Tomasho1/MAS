@@ -1,5 +1,9 @@
-﻿namespace MAS_Final
+﻿using System;
+using System.Collections.Generic;
+
+namespace MAS_Final
 {
+    [Serializable]
     public class Raport
     {
         private static int idOstatniRaport = 0;
@@ -68,6 +72,20 @@
             set
             {
                 skaut = value;
+            }
+        }
+
+        private static List<Raport> extent = new List<Raport>();
+
+        public static List<Raport> Extent
+        {
+            get
+            {
+                return extent;
+            }
+            set
+            {
+                extent = value;
             }
         }
 

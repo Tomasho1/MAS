@@ -10,6 +10,7 @@ namespace MAS_Final
         [Description("Zgoda na transfer")] Zgoda,
         [Description("Odrzucenie transferu")] Odrzucenie
     }
+    [Serializable]
     public class Decyzja
     {
 
@@ -85,6 +86,20 @@ namespace MAS_Final
             }
         }
 
+        private static List<Decyzja> extent = new List<Decyzja>();
+
+        public static List<Decyzja> Extent
+        {
+            get
+            {
+                return extent;
+            }
+            set
+            {
+                extent = value;
+            }
+        }
+
         public Decyzja(Prezes prezes, Zawodnik zawodnik, TypDecyzji typ, String komentarz)
         {
             idOstatniaDecyzja++;
@@ -93,6 +108,7 @@ namespace MAS_Final
             Zawodnik = zawodnik;
             Typ = typ.ToString();
             Komentarz = komentarz;
+            extent.Add(this);
         }
     }
 }
