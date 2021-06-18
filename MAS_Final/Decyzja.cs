@@ -106,7 +106,7 @@ namespace MAS_Final
             IdDecyzja = idOstatniaDecyzja;
             Prezes = prezes;
             Zawodnik = zawodnik;
-            Typ = typ.ToString();
+            Typ = Helper.GetEnumDescription(typ);
             Komentarz = komentarz;
             extent.Add(this);
         }

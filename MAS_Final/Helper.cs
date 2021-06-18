@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,8 +11,7 @@ using System.Text;
 
 namespace MAS_Final
 {
-
-    public abstract class Helper
+    public static class Helper
     {
         private static Dictionary<Type, String> extents = new Dictionary<Type, String>();
         public static void SaveExtent<T>(String fileName)
@@ -38,7 +39,7 @@ namespace MAS_Final
                 Type typ = typeof(T);
                 List<T> extent = (List<T>)typ.GetProperty("Extent", BindingFlags.Static | BindingFlags.Public).GetValue(null, null);
 
-                if(!extents.ContainsKey(typ))
+                if (!extents.ContainsKey(typ))
                 {
                     throw new Exception("Ekstensja klasy nie została wcześniej zapisana");
                 }
@@ -66,5 +67,14 @@ namespace MAS_Final
                 Console.WriteLine($"Obiekt: {t}");
             }
         }
+        public static string GetEnumDescription(this Enum enumValue)
+        {
+            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+
+            var descriptionAttributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            return descriptionAttributes.Length > 0 ? descriptionAttributes[0].Description : enumValue.ToString();
+        }
     }
 }
+

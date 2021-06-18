@@ -70,11 +70,11 @@ namespace MAS_Final
 
         public void ZmienStatusZawodnika(Zawodnik zawodnik, StatusZawodnika status)
         {
-            if (zawodnik.Status != "PoObserwacji")
+            if (zawodnik.Status != Helper.GetEnumDescription(StatusZawodnika.PoObserwacji))
             {
                 throw new Exception("Nie możesz zmienić statusu tego zawodnika");
             }
-            zawodnik.Status = status.ToString();
+            zawodnik.Status = Helper.GetEnumDescription(status);
         }
     }
 }

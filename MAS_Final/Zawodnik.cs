@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnumsNET;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace MAS_Final
 
     public enum Opinia
     {
-        Pozytywna,
-        Negatywna
+        [Description("Zaopiniowany pozytywnie")] Pozytywna,
+        [Description("Zaopiniowany negatywnie")] Negatywna
     }
 
     [Serializable]
@@ -225,7 +226,7 @@ namespace MAS_Final
             DataUrodzenia = dataUrodzenia;
             AktualnyKlub = aktualnyKlub;
             Wartosc = wartosc;
-            Status = StatusZawodnika.PoObserwacji.ToString();
+            Status = Helper.GetEnumDescription(StatusZawodnika.PoObserwacji);
             extent.Add(this);
         }
 

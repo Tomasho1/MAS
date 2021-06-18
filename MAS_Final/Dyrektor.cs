@@ -163,7 +163,7 @@ namespace MAS_Final
                 throw new Exception("Nie możesz wydać opinii dla tego zawodnika");
             }
 
-            zawodnik.Opinia = opinia.ToString();
+            zawodnik.Opinia = Helper.GetEnumDescription(opinia);
         }
         public Kosztorys StworzKosztorys(Zawodnik zawodnik, double szacowanaCena, double szacowanaPensja)
         {
@@ -172,7 +172,7 @@ namespace MAS_Final
                 throw new Exception("Tylko dyrektor sportowy może tworzyć kosztorys");
             }
 
-            if (zawodnik.Opinia != Opinia.Pozytywna.ToString())
+            if (zawodnik.Opinia != Helper.GetEnumDescription(Opinia.Pozytywna))
             {
                 throw new Exception("Zawodnik nie otrzymał pozytywnej opinii dyrektora ds. transferów");
             }
