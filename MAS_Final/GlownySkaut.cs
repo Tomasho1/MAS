@@ -59,5 +59,27 @@ namespace MAS_Final
             }
             zawodnik.Status = Helper.GetEnumDescription(status);
         }
+
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                GlownySkaut GlownySkaut = (GlownySkaut)obj;
+
+                if (Klub == GlownySkaut.Klub && Imie == GlownySkaut.Imie && Nazwisko == GlownySkaut.Nazwisko && Narodowosc == GlownySkaut.Narodowosc && DataUrodzenia == GlownySkaut.DataUrodzenia && DataZatrudnienia == GlownySkaut.DataZatrudnienia && Pensja == GlownySkaut.Pensja && DataPromocji == GlownySkaut.DataPromocji && Prezes.Equals(GlownySkaut.Prezes))
+                {
+                    return true;
+                }
+                else return false;
+            }
+        }
+        public override int GetHashCode()
+        {
+            return new { Klub, Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, Pensja, DataPromocji, Prezes}.GetHashCode();
+        }
     }
 }

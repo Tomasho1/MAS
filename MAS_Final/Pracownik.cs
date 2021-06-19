@@ -22,8 +22,8 @@ namespace MAS_Final
             }
         }
 
-        private Klub? klub;
-        public Klub? Klub
+        private Klub klub;
+        public Klub Klub
         {
             get
             {
@@ -31,12 +31,7 @@ namespace MAS_Final
             }
             set
             {
-                if (this.klub != null)
-                {
-                    klub.UsunPracownika(this);
-                }
-                this.klub = value;
-                value.DodajPracownika(this);
+                klub = value;
             }
         }
 
@@ -119,18 +114,18 @@ namespace MAS_Final
             }
         }
 
-        private DateTime? dataOdejscia;
-        public DateTime? DataOdejscia
-        {
-            get
-            {
-                return dataOdejscia;
-            }
-            set
-            {
-                dataOdejscia = value;
-            }
-        }
+        //private DateTime? dataOdejscia;
+        //public DateTime? DataOdejscia
+        //{
+        //    get
+        //    {
+        //        return dataOdejscia;
+        //    }
+        //    set
+        //    {
+        //        dataOdejscia = value;
+        //    }
+        //}
 
         private int stazWKlubie;
         public int StazWKlubie
@@ -138,15 +133,15 @@ namespace MAS_Final
             get
             {
                 DateTime now = DateTime.Today;
-                if (dataOdejscia != null)
-                {
-                    stazWKlubie = dataOdejscia.Value.Year - DataZatrudnienia.Year;
-                    if (dataOdejscia < DataZatrudnienia.AddYears(stazWKlubie))
-                    {
-                        stazWKlubie--;
-                    }
-                    return stazWKlubie;
-                }
+                //if (dataOdejscia != null)
+                //{
+                //    stazWKlubie = dataOdejscia.Value.Year - DataZatrudnienia.Year;
+                //    if (dataOdejscia < DataZatrudnienia.AddYears(stazWKlubie))
+                //    {
+                //        stazWKlubie--;
+                //    }
+                //    return stazWKlubie;
+                //}
 
                     stazWKlubie = now.Year - DataZatrudnienia.Year;
                     if (now < DataZatrudnienia.AddYears(stazWKlubie))
@@ -192,7 +187,7 @@ namespace MAS_Final
             {
                 Pracownik pracownik = (Pracownik)obj;
 
-                if (Imie == pracownik.Imie && Nazwisko == pracownik.Nazwisko && Narodowosc == pracownik.Narodowosc && DataUrodzenia == pracownik.DataUrodzenia && DataZatrudnienia == pracownik.DataZatrudnienia && DataOdejscia == pracownik.DataOdejscia && Pensja == pracownik.Pensja)
+                if (Klub == pracownik.Klub && Imie == pracownik.Imie && Nazwisko == pracownik.Nazwisko && Narodowosc == pracownik.Narodowosc && DataUrodzenia == pracownik.DataUrodzenia && DataZatrudnienia == pracownik.DataZatrudnienia &&Pensja == pracownik.Pensja)
                 {
                     return true;
                 }
@@ -201,7 +196,7 @@ namespace MAS_Final
         }
         public override int GetHashCode()
         {
-            return new {Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, DataOdejscia, Pensja}.GetHashCode();
+            return new {Klub, Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, Pensja}.GetHashCode();
         }
     }
     }

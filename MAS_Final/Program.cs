@@ -24,10 +24,8 @@ namespace MAS_Final
 
             Dyrektor d1 = Dyrektor.DodajDyrektora(k1, "Konrad", "Wójcicki", new DateTime(1981, 10, 15), new DateTime(2018, 06, 21), 7000, new List<TypDyrektora>() { TypDyrektora.Sportowy, TypDyrektora.Transferowy });
 
-
             Prezes p1 = Prezes.DodajPrezesa(k1, "Daniel", "Lewandowski", new DateTime(1965, 04, 21), new DateTime(2002, 05, 02), 10000, new DateTime(2016, 07, 01));
 
-            Prezes.DodajPrezesa(k1, "Daniel", "Lewandowski", new DateTime(1965, 04, 21), new DateTime(2002, 05, 02), 10000, new DateTime(2016, 07, 01));
 
             GlownySkaut gs1 = p1.AwansujSkauta(s2, 6000);
 

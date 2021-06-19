@@ -189,15 +189,16 @@ namespace MAS_Final
 
         public void DodajPrezesa(Prezes prezes)
         {
-            if(Prezes == prezes)
+          
+            if (Prezes != null)
+            {
+                new Exception("Klub już ma prezesa");
+            }
+
+            if (Prezes != null && Prezes != prezes)
             {
                 throw new Exception("Osoba już jest prezesem");
             }
-
-            //if (Prezes != null)
-            //{
-            //    throw new Exception("Klub już ma prezesa");
-            //}
 
             Prezes = prezes;
             Prezes.Klub = this;
@@ -205,7 +206,7 @@ namespace MAS_Final
 
         public void UsunPrezesa(Prezes prezes)
         {
-            if (Prezes != prezes)
+            if (!Prezes.Equals(prezes))
             {
                 throw new Exception("Osoba nie jest prezesem");
             }
@@ -238,6 +239,10 @@ namespace MAS_Final
 
         public void DodajPracownika(Pracownik pracownik)
         {
+            if(pracownicy.Contains(pracownik))
+            {
+                throw new Exception("Pracownik już pracuje w tym klubie");
+            }
 
             if (!pracownicy.Contains(pracownik))
             {

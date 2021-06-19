@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MAS_Final
@@ -57,7 +58,7 @@ namespace MAS_Final
             extent.Add(this);
         }
 
-        private Skaut(Pracownik pracownik, List<String> regiony) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
+        private Skaut(Pracownik pracownik, List<String> regiony, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
         {
             Type typ = typeof(Pracownik);
             Klub klub = pracownik.Klub;
@@ -94,10 +95,10 @@ namespace MAS_Final
             return skaut;
         }
 
-        public static Skaut DodajSkauta(Pracownik pracownik, List<String> regiony)
+        public static Skaut DodajSkauta(Pracownik pracownik, List<String> regiony, double nowaPensja)
         {
             Klub klub = pracownik.Klub;
-            Skaut skaut = new Skaut(pracownik, regiony);
+            Skaut skaut = new Skaut(pracownik, regiony, nowaPensja);
             klub.DodajPracownika(skaut);
             return skaut;
         }
@@ -121,9 +122,9 @@ namespace MAS_Final
             }
             else
             {
-                Skaut pracownik = (Skaut)obj;
+                Skaut skaut = (Skaut)obj;
 
-                if (Imie == pracownik.Imie && Nazwisko == pracownik.Nazwisko && Narodowosc == pracownik.Narodowosc && DataUrodzenia == pracownik.DataUrodzenia && DataZatrudnienia == pracownik.DataZatrudnienia && DataOdejscia == pracownik.DataOdejscia && Pensja == pracownik.Pensja && Regiony == pracownik.Regiony)
+                if (Klub == skaut.Klub && Imie == skaut.Imie && Nazwisko == skaut.Nazwisko && Narodowosc == skaut.Narodowosc && DataUrodzenia == skaut.DataUrodzenia && DataZatrudnienia == skaut.DataZatrudnienia && Pensja == skaut.Pensja && Regiony.SequenceEqual(skaut.Regiony))
                 {
                     return true;
                 }
@@ -132,7 +133,7 @@ namespace MAS_Final
         }
         public override int GetHashCode()
         {
-            return new { Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, DataOdejscia, Pensja, Regiony}.GetHashCode();
+            return new {Klub, Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, Pensja, Regiony}.GetHashCode();
         }
     }
 }

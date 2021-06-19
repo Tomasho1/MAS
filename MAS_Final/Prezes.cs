@@ -49,7 +49,7 @@ namespace MAS_Final
             PoczatekKadencji = poczatekKadencji;
         }
 
-        private Prezes(Pracownik pracownik, DateTime poczatekKadencji) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
+        private Prezes(Pracownik pracownik, DateTime poczatekKadencji, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
         {
             Type typ = typeof(Pracownik);
             Klub klub = pracownik.Klub;
@@ -60,13 +60,13 @@ namespace MAS_Final
                 klub.UsunGlownegoSkauta((GlownySkaut)pracownik);
             }
 
-            if(typ == typeof(Skaut))
+            if (typ == typeof(Skaut))
             {
                 klub.UsunPracownika(pracownik);
                 Skaut.Extent.Remove((Skaut)pracownik);
             }
 
-            if(typ == typeof(Dyrektor))
+            if (typ == typeof(Dyrektor))
             {
                 klub.UsunPracownika(pracownik);
                 Dyrektor.Extent.Remove((Dyrektor)pracownik);
@@ -75,21 +75,21 @@ namespace MAS_Final
 
         public static Prezes DodajPrezesa(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji)
         {
-            if(klub == null)
+            if (klub == null)
             {
                 throw new Exception("Nie ma takiego kluub");
             }
 
             Prezes prezes = new Prezes(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja, poczatekKadencji);
-            klub.DodajPracownika(prezes);
             klub.DodajPrezesa(prezes);
+            klub.DodajPracownika(prezes);
             return prezes;
         }
 
-        public static Prezes DodajPrezesa(Pracownik pracownik, DateTime poczatekKadencji)
+        public static Prezes DodajPrezesa(Pracownik pracownik, DateTime poczatekKadencji, double nowaPensja)
         {
             Klub klub = pracownik.Klub;
-            Prezes prezes = new Prezes(pracownik, poczatekKadencji);
+            Prezes prezes = new Prezes(pracownik, poczatekKadencji, nowaPensja);
             klub.DodajPracownika(prezes);
             klub.DodajPrezesa(prezes);
             return prezes;
@@ -110,5 +110,28 @@ namespace MAS_Final
             Decyzja decyzja = new Decyzja(this, zawodnik, typ, komentarz);
             return decyzja;
         }
+
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Prezes prezes = (Prezes)obj;
+
+                if (Klub == prezes.Klub && Imie == prezes.Imie && Nazwisko == prezes.Nazwisko && Narodowosc == prezes.Narodowosc && DataUrodzenia == prezes.DataUrodzenia && DataZatrudnienia == prezes.DataZatrudnienia && Pensja == prezes.Pensja && PoczatekKadencji == prezes.PoczatekKadencji)
+                {
+                    return true;
+                }
+                else return false;
+            }
+        }
+        public override int GetHashCode()
+        {
+            return new {Klub, Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, Pensja, PoczatekKadencji }.GetHashCode();
+        }
     }
 }
+

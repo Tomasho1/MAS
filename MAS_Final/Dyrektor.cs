@@ -85,7 +85,7 @@ namespace MAS_Final
             extent.Add(this);
         }
 
-        private Dyrektor(Pracownik pracownik, List<TypDyrektora> stanowiska) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
+        private Dyrektor(Pracownik pracownik, List<TypDyrektora> stanowiska, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
         {
             Type typ = typeof(Pracownik);
             Klub klub = pracownik.Klub;
@@ -137,10 +137,10 @@ namespace MAS_Final
             return dyrektor;
         }
 
-        public static Dyrektor DodajDyrektora(Pracownik pracownik, List<TypDyrektora> stanowiska)
+        public static Dyrektor DodajDyrektora(Pracownik pracownik, List<TypDyrektora> stanowiska, double nowaPensja)
         {
             Klub klub = pracownik.Klub;
-            Dyrektor dyrektor = new Dyrektor(pracownik, stanowiska);
+            Dyrektor dyrektor = new Dyrektor(pracownik, stanowiska, nowaPensja);
             klub.DodajPracownika(dyrektor);
             return dyrektor;
         }
@@ -169,5 +169,28 @@ namespace MAS_Final
             Kosztorys kosztorys = new Kosztorys(this, zawodnik, szacowanaCena, szacowanaPensja);
             return kosztorys;
         }
+
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Dyrektor dyrektor = (Dyrektor)obj;
+
+                if (Klub == dyrektor.Klub && Imie == dyrektor.Imie && Nazwisko == dyrektor.Nazwisko && Narodowosc == dyrektor.Narodowosc && DataUrodzenia == dyrektor.DataUrodzenia && DataZatrudnienia == dyrektor.DataZatrudnienia && Pensja == dyrektor.Pensja && DyrektorSportowy == dyrektor.DyrektorSportowy && DyrektorTransferowy == dyrektor.DyrektorTransferowy)
+                {
+                    return true;
+                }
+                else return false;
+            }
+        }
+        public override int GetHashCode()
+        {
+            return new { Klub, Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, Pensja, DyrektorSportowy, DyrektorTransferowy}.GetHashCode();
+        }
     }
 }
+
