@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MAS_Final
 {
+    [Serializable]
     public class Prezes : Pracownik
     {
         private DateTime poczatekKadencji;
@@ -43,43 +44,63 @@ namespace MAS_Final
             }
         }
 
-        public Prezes(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        private Prezes(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
         {
             PoczatekKadencji = poczatekKadencji;
-            klub.DodajPrezesa(this);
         }
 
-        public Prezes(GlownySkaut glownySkaut, DateTime poczatekKadencji) : base(glownySkaut.Klub, glownySkaut.Imie, glownySkaut.Nazwisko, glownySkaut.DataUrodzenia, glownySkaut.DataZatrudnienia, glownySkaut.Pensja)
+        private Prezes(Pracownik pracownik, DateTime poczatekKadencji) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
         {
-            Klub klub = glownySkaut.Klub;
-            klub.UsunGlownegoSkauta(glownySkaut);
+            Type typ = typeof(Pracownik);
+            Klub klub = pracownik.Klub;
             PoczatekKadencji = poczatekKadencji;
-            klub.DodajPrezesa(this);
+
+            if (typ == typeof(GlownySkaut))
+            {
+                klub.UsunGlownegoSkauta((GlownySkaut)pracownik);
+            }
+
+            if(typ == typeof(Skaut))
+            {
+                klub.UsunPracownika(pracownik);
+                Skaut.Extent.Remove((Skaut)pracownik);
+            }
+
+            if(typ == typeof(Dyrektor))
+            {
+                klub.UsunPracownika(pracownik);
+                Dyrektor.Extent.Remove((Dyrektor)pracownik);
+            }
         }
 
-        public Prezes(Skaut skaut, DateTime poczatekKadencji) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.DataUrodzenia, skaut.DataZatrudnienia, skaut.Pensja)
+        public static Prezes DodajPrezesa(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji)
         {
-            Klub klub = skaut.Klub;
-            klub.UsunPracownika(skaut);
-            Skaut.Extent.Remove(skaut);
-            PoczatekKadencji = poczatekKadencji;
-            klub.DodajPrezesa(this);
+            if(klub == null)
+            {
+                throw new Exception("Nie ma takiego kluub");
+            }
+
+            Prezes prezes = new Prezes(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja, poczatekKadencji);
+            klub.DodajPracownika(prezes);
+            klub.DodajPrezesa(prezes);
+            return prezes;
         }
 
-        public Prezes(Dyrektor dyrektor, DateTime poczatekKadencji) : base(dyrektor.Klub, dyrektor.Imie, dyrektor.Nazwisko, dyrektor.DataUrodzenia, dyrektor.DataZatrudnienia, dyrektor.Pensja)
+        public static Prezes DodajPrezesa(Pracownik pracownik, DateTime poczatekKadencji)
         {
-            Klub klub = dyrektor.Klub;
-            klub.UsunPracownika(dyrektor);
-            Dyrektor.Extent.Remove(dyrektor);
-            PoczatekKadencji = poczatekKadencji;
-            klub.DodajPrezesa(this);
+            Klub klub = pracownik.Klub;
+            Prezes prezes = new Prezes(pracownik, poczatekKadencji);
+            klub.DodajPracownika(prezes);
+            klub.DodajPrezesa(prezes);
+            return prezes;
         }
 
-        public GlownySkaut AwansujSkauta(Skaut skaut)
+        public GlownySkaut AwansujSkauta(Skaut skaut, double pensja)
         {
-            GlownySkaut glownySkaut = new GlownySkaut(skaut, this, DateTime.Now);
+            GlownySkaut glownySkaut = GlownySkaut.DodajGlownegoSkauta(skaut, this, DateTime.Now, pensja);
             return glownySkaut;
         }
+
         public Decyzja PodejmijDecyzje(Zawodnik zawodnik, TypDecyzji typ, String komentarz)
         {
             if (zawodnik.Kosztorys == null)

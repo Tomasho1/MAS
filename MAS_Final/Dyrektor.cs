@@ -65,7 +65,7 @@ namespace MAS_Final
             }
         }
 
-        public Dyrektor(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        private Dyrektor(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
         {
             if (stanowiska.Contains(TypDyrektora.Sportowy))
             {
@@ -83,13 +83,13 @@ namespace MAS_Final
                 DyrektorTransferowy = true;
             }
             extent.Add(this);
-            klub.DodajPracownika(this);
         }
 
-        public Dyrektor(Skaut skaut, List<TypDyrektora> stanowiska) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.DataUrodzenia, skaut.DataZatrudnienia, skaut.Pensja)
+        private Dyrektor(Pracownik pracownik, List<TypDyrektora> stanowiska) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
         {
-            Klub klub = skaut.Klub;
-            klub.UsunPracownika(skaut);
+            Type typ = typeof(Pracownik);
+            Klub klub = pracownik.Klub;
+
             if (stanowiska.Contains(TypDyrektora.Sportowy))
             {
                 DyrektorSportowy = true;
@@ -105,60 +105,49 @@ namespace MAS_Final
                 DyrektorSportowy = true;
                 DyrektorTransferowy = true;
             }
+
+            if (typ == typeof(Skaut))
+            {
+                klub.UsunPracownika(pracownik);
+                Skaut.Extent.Remove((Skaut)pracownik);
+            }
+
+            if (typ == typeof(GlownySkaut))
+            {
+                klub.UsunGlownegoSkauta((GlownySkaut)pracownik);
+            }
+
+            if (typ == typeof(Prezes))
+            {
+                klub.UsunPrezesa((Prezes)pracownik);
+            }
+
             extent.Add(this);
-            klub.DodajPracownika(this);
         }
 
-        public Dyrektor(GlownySkaut glownySkaut, List<TypDyrektora> stanowiska) : base(glownySkaut.Klub, glownySkaut.Imie, glownySkaut.Nazwisko, glownySkaut.DataUrodzenia, glownySkaut.DataZatrudnienia, glownySkaut.Pensja)
+        public static Dyrektor DodajDyrektora(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska)
         {
-            Klub klub = glownySkaut.Klub;
-            klub.UsunGlownegoSkauta(glownySkaut);
-            if (stanowiska.Contains(TypDyrektora.Sportowy))
+            if (klub == null)
             {
-                DyrektorSportowy = true;
+                throw new Exception("Nie ma takiego klubu");
             }
 
-            if (stanowiska.Contains(TypDyrektora.Transferowy))
-            {
-                DyrektorTransferowy = true;
-            }
-
-            if (stanowiska.Contains(TypDyrektora.Sportowy) && stanowiska.Contains(TypDyrektora.Transferowy))
-            {
-                DyrektorSportowy = true;
-                DyrektorTransferowy = true;
-            }
-            extent.Add(this);
-            klub.DodajPracownika(this);
+            Dyrektor dyrektor = new Dyrektor(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja, stanowiska);
+            klub.DodajPracownika(dyrektor);
+            return dyrektor;
         }
 
-        public Dyrektor(Prezes prezes, List<TypDyrektora> stanowiska) : base(prezes.Klub, prezes.Imie, prezes.Nazwisko, prezes.DataUrodzenia, prezes.DataZatrudnienia, prezes.Pensja)
+        public static Dyrektor DodajDyrektora(Pracownik pracownik, List<TypDyrektora> stanowiska)
         {
-            Klub klub = prezes.Klub;
-            klub.UsunPrezesa(prezes);
-            if (stanowiska.Contains(TypDyrektora.Sportowy))
-            {
-                DyrektorSportowy = true;
-            }
-
-            if (stanowiska.Contains(TypDyrektora.Transferowy))
-            {
-                DyrektorTransferowy = true;
-            }
-
-            if (stanowiska.Contains(TypDyrektora.Sportowy) && stanowiska.Contains(TypDyrektora.Transferowy))
-            {
-                DyrektorSportowy = true;
-                DyrektorTransferowy = true;
-            }
-            extent.Add(this);
-            klub.DodajPracownika(this);
+            Klub klub = pracownik.Klub;
+            Dyrektor dyrektor = new Dyrektor(pracownik, stanowiska);
+            klub.DodajPracownika(dyrektor);
+            return dyrektor;
         }
-
 
         public void WydajOpinie(Zawodnik zawodnik, Opinia opinia)
         {
-            if (zawodnik.Status == "ZawieszenieObserwacji")
+            if (zawodnik.Status == Helper.GetEnumDescription(StatusZawodnika.ZawieszenieObserwacji))
             {
                 throw new Exception("Nie możesz wydać opinii dla tego zawodnika");
             }

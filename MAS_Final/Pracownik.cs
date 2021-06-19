@@ -119,18 +119,41 @@ namespace MAS_Final
             }
         }
 
+        private DateTime? dataOdejscia;
+        public DateTime? DataOdejscia
+        {
+            get
+            {
+                return dataOdejscia;
+            }
+            set
+            {
+                dataOdejscia = value;
+            }
+        }
+
         private int stazWKlubie;
         public int StazWKlubie
         {
             get
             {
                 DateTime now = DateTime.Today;
-                stazWKlubie = now.Year - this.DataUrodzenia.Year;
-                if (now < DataUrodzenia.AddYears(stazWKlubie))
+                if (dataOdejscia != null)
                 {
-                    stazWKlubie--;
+                    stazWKlubie = dataOdejscia.Value.Year - DataZatrudnienia.Year;
+                    if (dataOdejscia < DataZatrudnienia.AddYears(stazWKlubie))
+                    {
+                        stazWKlubie--;
+                    }
+                    return stazWKlubie;
                 }
-                return stazWKlubie;
+
+                    stazWKlubie = now.Year - DataZatrudnienia.Year;
+                    if (now < DataZatrudnienia.AddYears(stazWKlubie))
+                    {
+                        stazWKlubie--;
+                    }
+                    return stazWKlubie;
             }
         }
 
@@ -151,6 +174,7 @@ namespace MAS_Final
         {
             idOstatniPracownik++;
             IdPracownik = idOstatniPracownik;
+            Klub = klub;
             Imie = imie;
             Nazwisko = nazwisko;
             DataUrodzenia = dataUrodzenia;
@@ -168,7 +192,7 @@ namespace MAS_Final
             {
                 Pracownik pracownik = (Pracownik)obj;
 
-                if (this.Klub == pracownik.Klub && this.Imie == pracownik.Imie && this.Nazwisko == pracownik.Nazwisko && this.Narodowosc == pracownik.Narodowosc && this.dataUrodzenia == pracownik.DataUrodzenia && this.dataZatrudnienia == pracownik.DataZatrudnienia && this.pensja == pracownik.Pensja)
+                if (Imie == pracownik.Imie && Nazwisko == pracownik.Nazwisko && Narodowosc == pracownik.Narodowosc && DataUrodzenia == pracownik.DataUrodzenia && DataZatrudnienia == pracownik.DataZatrudnienia && DataOdejscia == pracownik.DataOdejscia && Pensja == pracownik.Pensja)
                 {
                     return true;
                 }
@@ -177,7 +201,7 @@ namespace MAS_Final
         }
         public override int GetHashCode()
         {
-            return new {Klub, Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, Pensja}.GetHashCode();
+            return new {Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, DataOdejscia, Pensja}.GetHashCode();
         }
     }
     }

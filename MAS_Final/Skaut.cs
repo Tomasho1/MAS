@@ -51,40 +51,57 @@ namespace MAS_Final
             }
         }
 
-        public Skaut(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<String> regiony) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        private Skaut(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<String> regiony) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
         {
             Regiony = regiony;
             extent.Add(this);
-            klub.DodajPracownika(this);
         }
 
-        public Skaut(GlownySkaut glownySkaut, List<String> regiony) : base(glownySkaut.Klub, glownySkaut.Imie, glownySkaut.Nazwisko, glownySkaut.DataUrodzenia, glownySkaut.DataZatrudnienia, glownySkaut.Pensja)
+        private Skaut(Pracownik pracownik, List<String> regiony) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, pracownik.Pensja)
         {
-            Klub klub = glownySkaut.Klub;
-            klub.UsunGlownegoSkauta(glownySkaut);
+            Type typ = typeof(Pracownik);
+            Klub klub = pracownik.Klub;
             Regiony = regiony;
+
+            if (typ == typeof(GlownySkaut))
+            {
+                klub.UsunGlownegoSkauta((GlownySkaut)pracownik);
+            }
+
+            if (typ == typeof(Dyrektor))
+            {
+                klub.UsunPracownika(pracownik);
+                Dyrektor.Extent.Remove((Dyrektor)pracownik);
+            }
+
+            if(typ == typeof(Prezes))
+            {
+                klub.UsunPrezesa((Prezes)pracownik);
+            }
+
             extent.Add(this);
-            klub.DodajPracownika(this);
         }
 
-        public Skaut(Prezes prezes, List<String> regiony) : base(prezes.Klub, prezes.Imie, prezes.Nazwisko, prezes.DataUrodzenia, prezes.DataZatrudnienia, prezes.Pensja)
+        public static Skaut DodajSkauta(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<String> regiony)
         {
-            Klub klub = prezes.Klub;
-            klub.UsunPrezesa(prezes);
-            Regiony = regiony;
-            extent.Add(this);
-            klub.DodajPracownika(this);
+            if (klub == null)
+            {
+                throw new Exception("Nie ma takiego klubu");
+            }
+
+            Skaut skaut = new Skaut(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja, regiony);
+            klub.DodajPracownika(skaut);
+            return skaut;
         }
 
-        public Skaut(Dyrektor dyrektor, List<String> regiony) : base(dyrektor.Klub, dyrektor.Imie, dyrektor.Nazwisko, dyrektor.DataUrodzenia, dyrektor.DataZatrudnienia, dyrektor.Pensja)
+        public static Skaut DodajSkauta(Pracownik pracownik, List<String> regiony)
         {
-            Klub klub = dyrektor.Klub; 
-            klub.UsunPracownika(dyrektor);
-            Regiony = regiony;
-            Dyrektor.Extent.Remove(dyrektor);
-            extent.Add(this);
-            klub.DodajPracownika(this);
+            Klub klub = pracownik.Klub;
+            Skaut skaut = new Skaut(pracownik, regiony);
+            klub.DodajPracownika(skaut);
+            return skaut;
         }
+
         public void DodajRaport(Skaut skaut, Raport raport)
         {
             raporty.Add(new KeyValuePair<Skaut, Raport>(skaut, raport));
@@ -95,5 +112,27 @@ namespace MAS_Final
             Raport raport = new Raport(this, zawodnik, mecz, komentarz);
             return raport;
         }
+
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Skaut pracownik = (Skaut)obj;
+
+                if (Imie == pracownik.Imie && Nazwisko == pracownik.Nazwisko && Narodowosc == pracownik.Narodowosc && DataUrodzenia == pracownik.DataUrodzenia && DataZatrudnienia == pracownik.DataZatrudnienia && DataOdejscia == pracownik.DataOdejscia && Pensja == pracownik.Pensja && Regiony == pracownik.Regiony)
+                {
+                    return true;
+                }
+                else return false;
+            }
+        }
+        public override int GetHashCode()
+        {
+            return new { Imie, Nazwisko, Narodowosc, DataUrodzenia, DataZatrudnienia, DataOdejscia, Pensja, Regiony}.GetHashCode();
+        }
     }
-    }
+}

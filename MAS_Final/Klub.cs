@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace MAS_Final
 {
@@ -130,6 +131,21 @@ namespace MAS_Final
             }
         }
 
+
+        private List<Pracownik> wszyscyPracownicy = new List<Pracownik>();
+
+        public List<Pracownik> WszyscyPracownicy
+        {
+            get
+            {
+                return wszyscyPracownicy;
+            }
+            set
+            {
+                wszyscyPracownicy = value;
+            }
+        }
+
         private List<Pracownik> pracownicy = new List<Pracownik>();
 
         public List<Pracownik> Pracownicy
@@ -178,12 +194,13 @@ namespace MAS_Final
                 throw new Exception("Osoba już jest prezesem");
             }
 
-            if (Prezes != null)
-            {
-                throw new Exception("Klub już ma prezesa");
-            }
+            //if (Prezes != null)
+            //{
+            //    throw new Exception("Klub już ma prezesa");
+            //}
 
             Prezes = prezes;
+            Prezes.Klub = this;
         }
 
         public void UsunPrezesa(Prezes prezes)
@@ -221,21 +238,52 @@ namespace MAS_Final
 
         public void DodajPracownika(Pracownik pracownik)
         {
-            if(pracownicy.Contains(pracownik))
+
+            if (!pracownicy.Contains(pracownik))
             {
-                throw new Exception("Pracownik jest już zatrudniony w tym klubie");
+                if (wszyscyPracownicy.Contains(pracownik))
+                {
+                    throw new Exception("Pracownik pracuje już w innym klubie");
+                }
+
+                pracownicy.Add(pracownik);
+                wszyscyPracownicy.Add(pracownik);
             }
-            pracownicy.Add(pracownik);
         }
 
         public void UsunPracownika(Pracownik pracownik)
         {
+            Type typ = typeof(Pracownik);
+
             if (!pracownicy.Contains(pracownik))
             {
                 throw new Exception("Pracownik nie pracuje w tym klubie");
             }
             pracownicy.Remove(pracownik);
-            pracownik.Klub = null;
+            wszyscyPracownicy.Remove(pracownik);
+
+            if(typ == typeof(Dyrektor) || typ == typeof(Skaut))
+            {
+                List<Pracownik> extent = (List<Pracownik>)typ.GetProperty("Extent", BindingFlags.Static | BindingFlags.Public).GetValue(null, null);
+                extent.Remove(pracownik);
+            }
         }
+
+    //    public void ZwolnijPracownika(Pracownik pracownik)
+    //    {
+    //        Type typ = typeof(Pracownik);
+
+    //        if(!pracownicy.Contains(pracownik) && Prezes != pracownik && GlownySkaut != pracownik)
+    //        {
+    //            throw new Exception("Nie znaleziono osoby");
+    //        }
+
+    //        List<Pracownik> extent = (List<Pracownik>)typ.GetProperty("Extent", BindingFlags.Static | BindingFlags.Public).GetValue(null, null);
+
+    //        pracownik.DataOdejscia = DateTime.Today;
+    //        pracownik.Klub = null;
+    //        pracownik.Pensja = 0;
+
+    //    }
     }
 }

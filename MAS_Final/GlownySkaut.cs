@@ -33,39 +33,22 @@ namespace MAS_Final
             }
         }
 
-        public GlownySkaut(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, Prezes prezes, DateTime dataPromocji) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        private GlownySkaut(Skaut skaut, Pracownik prezes, DateTime dataPromocji, double nowaPensja) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.DataUrodzenia, skaut.DataZatrudnienia, nowaPensja)
         {
-            Prezes = prezes;
-            DataPromocji = dataPromocji;
-            klub.DodajGlownegoSkauta(this);
+                Klub klub = skaut.Klub;
+                klub.UsunPracownika(skaut);
+                Skaut.Extent.Remove(skaut);
+                Prezes = (Prezes)prezes;
+                DataPromocji = dataPromocji;
         }
 
-        public GlownySkaut(Skaut skaut, Prezes prezes, DateTime dataPromocji) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.DataUrodzenia, skaut.DataZatrudnienia, skaut.Pensja)
+        public static GlownySkaut DodajGlownegoSkauta(Skaut skaut, Pracownik prezes, DateTime dataPromocji, double nowaPensja)
         {
             Klub klub = skaut.Klub;
-            klub.UsunPracownika(skaut);
-            Skaut.Extent.Remove(skaut);
-            Prezes = prezes;
-            DataPromocji = dataPromocji;
-            klub.DodajGlownegoSkauta(this);
-        }
-
-        public GlownySkaut(Prezes byly, Prezes prezes, DateTime dataPromocji) : base(prezes.Klub, prezes.Imie, prezes.Nazwisko, prezes.DataUrodzenia, prezes.DataZatrudnienia, prezes.Pensja)
-        {
-            Klub klub = byly.Klub;
-            Prezes = prezes;
-            DataPromocji = dataPromocji;
-            klub.DodajGlownegoSkauta(this);
-        }
-
-        public GlownySkaut(Dyrektor dyrektor, Prezes prezes, DateTime dataPromocji) : base(dyrektor.Klub, dyrektor.Imie, dyrektor.Nazwisko, dyrektor.DataUrodzenia, dyrektor.DataZatrudnienia, dyrektor.Pensja)
-        {
-            Klub klub = dyrektor.Klub;
-            klub.UsunPracownika(dyrektor);
-            Dyrektor.Extent.Remove(dyrektor);
-            Prezes = prezes;
-            DataPromocji = dataPromocji;
-            klub.DodajGlownegoSkauta(this);
+            GlownySkaut glownySkaut = new GlownySkaut(skaut, prezes, dataPromocji, nowaPensja);
+            klub.DodajPracownika(glownySkaut);
+            klub.DodajGlownegoSkauta(glownySkaut);
+            return glownySkaut;
         }
 
         public void ZmienStatusZawodnika(Zawodnik zawodnik, StatusZawodnika status)
