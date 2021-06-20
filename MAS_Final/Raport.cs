@@ -97,8 +97,8 @@ namespace MAS_Final
             Skaut = skaut;
             Mecz = mecz;
             Komentarz = komentarz;
-            zawodnik.DodajRaport(zawodnik, this);
-            skaut.DodajRaport(skaut, this);
+            zawodnik.DodajRaport(skaut, this);
+            skaut.DodajRaport(zawodnik, this);
         }
     }
 }

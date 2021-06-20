@@ -165,13 +165,14 @@ namespace MAS_Final
             }
         }
 
-        public Pracownik(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja)
+        public Pracownik(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja)
         {
             idOstatniPracownik++;
             IdPracownik = idOstatniPracownik;
             Klub = klub;
             Imie = imie;
             Nazwisko = nazwisko;
+            Narodowosc = narodowosc;
             DataUrodzenia = dataUrodzenia;
             DataZatrudnienia = dataZatrudnienia;
             Pensja = pensja;

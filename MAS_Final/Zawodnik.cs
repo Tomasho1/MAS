@@ -187,8 +187,8 @@ namespace MAS_Final
             }
         }
 
-        private List<KeyValuePair<Zawodnik, Raport>> raporty = new List<KeyValuePair<Zawodnik, Raport>>();
-        public List<KeyValuePair<Zawodnik, Raport>> Raporty
+        private List<KeyValuePair<Skaut, Raport>> raporty = new List<KeyValuePair<Skaut, Raport>>();
+        public List<KeyValuePair<Skaut, Raport>> Raporty
         {
             get
             {
@@ -236,9 +236,9 @@ namespace MAS_Final
             return lista;
         }
 
-        public void DodajRaport(Zawodnik zawodnik, Raport raport)
+        public void DodajRaport(Skaut skaut, Raport raport)
         {
-            raporty.Add(new KeyValuePair<Zawodnik, Raport>(zawodnik, raport));
+            raporty.Add(new KeyValuePair<Skaut, Raport>(skaut, raport));
         }
 
     }

@@ -65,7 +65,7 @@ namespace MAS_Final
             }
         }
 
-        private Dyrektor(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        private Dyrektor(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska) : base(klub, imie, nazwisko, narodowosc, dataUrodzenia, dataZatrudnienia, pensja)
         {
             if (stanowiska.Contains(TypDyrektora.Sportowy))
             {
@@ -85,7 +85,7 @@ namespace MAS_Final
             extent.Add(this);
         }
 
-        private Dyrektor(Pracownik pracownik, List<TypDyrektora> stanowiska, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
+        private Dyrektor(Pracownik pracownik, List<TypDyrektora> stanowiska, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.Narodowosc, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
         {
             Type typ = typeof(Pracownik);
             Klub klub = pracownik.Klub;
@@ -125,14 +125,14 @@ namespace MAS_Final
             extent.Add(this);
         }
 
-        public static Dyrektor DodajDyrektora(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska)
+        public static Dyrektor DodajDyrektora(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska)
         {
             if (klub == null)
             {
                 throw new Exception("Nie ma takiego klubu");
             }
 
-            Dyrektor dyrektor = new Dyrektor(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja, stanowiska);
+            Dyrektor dyrektor = new Dyrektor(klub, imie, nazwisko, narodowosc, dataUrodzenia, dataZatrudnienia, pensja, stanowiska);
             klub.DodajPracownika(dyrektor);
             return dyrektor;
         }

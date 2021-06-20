@@ -33,7 +33,7 @@ namespace MAS_Final
             }
         }
 
-        private GlownySkaut(Skaut skaut, Pracownik prezes, DateTime dataPromocji, double nowaPensja) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.DataUrodzenia, skaut.DataZatrudnienia, nowaPensja)
+        private GlownySkaut(Skaut skaut, Pracownik prezes, DateTime dataPromocji, double nowaPensja) : base(skaut.Klub, skaut.Imie, skaut.Nazwisko, skaut.Narodowosc, skaut.DataUrodzenia, skaut.DataZatrudnienia, nowaPensja)
         {
                 Klub klub = skaut.Klub;
                 klub.UsunPracownika(skaut);

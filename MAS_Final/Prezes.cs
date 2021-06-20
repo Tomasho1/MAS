@@ -44,12 +44,12 @@ namespace MAS_Final
             }
         }
 
-        private Prezes(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        private Prezes(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji) : base(klub, imie, nazwisko, narodowosc, dataUrodzenia, dataZatrudnienia, pensja)
         {
             PoczatekKadencji = poczatekKadencji;
         }
 
-        private Prezes(Pracownik pracownik, DateTime poczatekKadencji, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
+        private Prezes(Pracownik pracownik, DateTime poczatekKadencji, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.Narodowosc, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
         {
             Type typ = typeof(Pracownik);
             Klub klub = pracownik.Klub;
@@ -73,14 +73,14 @@ namespace MAS_Final
             }
         }
 
-        public static Prezes DodajPrezesa(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji)
+        public static Prezes DodajPrezesa(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji)
         {
             if (klub == null)
             {
                 throw new Exception("Nie ma takiego kluub");
             }
 
-            Prezes prezes = new Prezes(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja, poczatekKadencji);
+            Prezes prezes = new Prezes(klub, imie, nazwisko, narodowosc, dataUrodzenia, dataZatrudnienia, pensja, poczatekKadencji);
             klub.DodajPrezesa(prezes);
             klub.DodajPracownika(prezes);
             return prezes;

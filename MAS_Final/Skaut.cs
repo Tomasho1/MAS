@@ -23,8 +23,8 @@ namespace MAS_Final
 
         }
 
-        private List<KeyValuePair<Skaut, Raport>> raporty = new List<KeyValuePair<Skaut, Raport>>();
-        public List<KeyValuePair<Skaut, Raport>> Raporty
+        private List<KeyValuePair<Zawodnik, Raport>> raporty = new List<KeyValuePair<Zawodnik, Raport>>();
+        public List<KeyValuePair<Zawodnik, Raport>> Raporty
         {
             get
             {
@@ -52,13 +52,13 @@ namespace MAS_Final
             }
         }
 
-        private Skaut(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<String> regiony) : base(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja)
+        private Skaut(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<String> regiony) : base(klub, imie, nazwisko, narodowosc, dataUrodzenia, dataZatrudnienia, pensja)
         {
             Regiony = regiony;
             extent.Add(this);
         }
 
-        private Skaut(Pracownik pracownik, List<String> regiony, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
+        private Skaut(Pracownik pracownik, List<String> regiony, double nowaPensja) : base(pracownik.Klub, pracownik.Imie, pracownik.Nazwisko, pracownik.Narodowosc, pracownik.DataUrodzenia, pracownik.DataZatrudnienia, nowaPensja)
         {
             Type typ = typeof(Pracownik);
             Klub klub = pracownik.Klub;
@@ -83,14 +83,14 @@ namespace MAS_Final
             extent.Add(this);
         }
 
-        public static Skaut DodajSkauta(Klub klub, String imie, String nazwisko, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<String> regiony)
+        public static Skaut DodajSkauta(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<String> regiony)
         {
             if (klub == null)
             {
                 throw new Exception("Nie ma takiego klubu");
             }
 
-            Skaut skaut = new Skaut(klub, imie, nazwisko, dataUrodzenia, dataZatrudnienia, pensja, regiony);
+            Skaut skaut = new Skaut(klub, imie, nazwisko, narodowosc, dataUrodzenia, dataZatrudnienia, pensja, regiony);
             klub.DodajPracownika(skaut);
             return skaut;
         }
@@ -103,9 +103,9 @@ namespace MAS_Final
             return skaut;
         }
 
-        public void DodajRaport(Skaut skaut, Raport raport)
+        public void DodajRaport(Zawodnik zawodnik, Raport raport)
         {
-            raporty.Add(new KeyValuePair<Skaut, Raport>(skaut, raport));
+            raporty.Add(new KeyValuePair<Zawodnik, Raport>(zawodnik, raport));
         }
 
         public Raport StworzRaport(Zawodnik zawodnik, Mecz mecz, String komentarz)
