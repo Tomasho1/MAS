@@ -42,5 +42,13 @@ namespace GUI
             f3.ShowDialog();
             Close();
         }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Skauci f1 = new Skauci();
+            Hide();
+            f1.ShowDialog();
+            Close();
+        }
     }
 }

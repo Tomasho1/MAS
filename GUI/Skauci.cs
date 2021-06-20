@@ -23,18 +23,17 @@ namespace GUI
             dt.Columns.Add("Imię", typeof(string));
             dt.Columns.Add("Nazwisko", typeof(string));
             dt.Columns.Add("Narodowość", typeof(string)); 
-            dt.Columns.Add("Obserwowani", typeof(string));
 
             var extent = Skaut.Extent;
 
             foreach (Skaut skaut in extent)
             {
-                dt.Rows.Add(skaut.IdPracownik, skaut.Imie, skaut.Nazwisko, skaut.Narodowosc, "Szczegóły");
+                dt.Rows.Add(skaut.IdPracownik, skaut.Imie, skaut.Nazwisko, skaut.Narodowosc);
             }
 
             dataGridView1.DataSource = dt;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            //dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
         }
 
@@ -49,6 +48,10 @@ namespace GUI
             f3.ShowDialog();
             Close();
 
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
 
         }
     }
