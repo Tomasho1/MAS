@@ -11,18 +11,24 @@ using System.Text;
 
 namespace MAS_Final
 {
+    // <summary>
+    // Statyczna klasa pomocnicza do zarządzania ekstensją i formowatowaniem wartości z enumów
+    // <summary>
     public static class Helper
     {
+        //Statyczna lista przechowująca wpisy na temat klas i nazwy pliku z jej ekstensją
         private static Dictionary<Type, String> extents = new Dictionary<Type, String>();
+
+        //Zapisanie ekstensji klasy do pliku
         public static void SaveExtent<T>(String fileName)
         {
             Type typ = typeof(T);
             List<T> extent = (List<T>)typ.GetProperty("Extent", BindingFlags.Static | BindingFlags.Public).GetValue(null, null);
 
-            if (extents.ContainsValue(fileName))
+            if(extents.ContainsKey(typ))
             {
-                var x = extents.FirstOrDefault(x => x.Value == fileName).Key;
-                extents.Remove(x);
+                extents.Remove(typ);
+                File.Delete(fileName);
             }
 
             IFormatter formatter = new BinaryFormatter();
@@ -32,6 +38,7 @@ namespace MAS_Final
             stream.Close();
         }
 
+        //Odczytanie ekstensji klasy z pliku
         public static void ReadExtent<T>()
         {
             try
@@ -57,6 +64,7 @@ namespace MAS_Final
             }
         }
 
+        //Wyświetlenie obiektów znajdujących się w ekstensji
         public static void ShowExtent<T>()
         {
             Type typ = typeof(T);
@@ -67,6 +75,8 @@ namespace MAS_Final
                 Console.WriteLine($"Obiekt: {t}");
             }
         }
+
+        //Uzyskanie opisu umieszczonego przy wartości w enumie
         public static string GetEnumDescription(this Enum enumValue)
         {
             var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());

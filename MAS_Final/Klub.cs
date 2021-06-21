@@ -5,6 +5,10 @@ using System.Reflection;
 namespace MAS_Final
 {
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca klub zapisany do systemu
+    // <summary>
     public class Klub
     {
         private static int idOstatniKlub = 0;
@@ -72,6 +76,11 @@ namespace MAS_Final
             }
             set
             {
+                //Rok założenia nie może być większy od aktualnego
+                if (value > DateTime.Now.Year)
+                {
+                    throw new Exception("Wprowadzono nieprawidłowy rok");
+                }
                 rokZalozenia = value;
             }
         }
@@ -104,7 +113,6 @@ namespace MAS_Final
         }
 
         private Prezes? prezes;
-
         public Prezes? Prezes
         {
             get
@@ -118,7 +126,6 @@ namespace MAS_Final
         }
 
         private GlownySkaut? glownySkaut;
-
         public GlownySkaut? GlownySkaut
         {
             get
@@ -131,10 +138,9 @@ namespace MAS_Final
             }
         }
 
-
-        private List<Pracownik> wszyscyPracownicy = new List<Pracownik>();
-
-        public List<Pracownik> WszyscyPracownicy
+        //Kolekcja przechowująca wszystkich pracowników we wszystkich klubach podpiętych do systemu
+        private static HashSet<Pracownik> wszyscyPracownicy = new HashSet<Pracownik>();
+        public HashSet<Pracownik> WszyscyPracownicy
         {
             get
             {
@@ -146,8 +152,8 @@ namespace MAS_Final
             }
         }
 
+        //Lista przechowująca wszystkich pracowników w danym klubie
         private List<Pracownik> pracownicy = new List<Pracownik>();
-
         public List<Pracownik> Pracownicy
         {
             get
@@ -160,8 +166,8 @@ namespace MAS_Final
             }
         }
 
+        //Statyczna lista przechowująca wszystkie obiekty klasy
         private static List<Klub> extent = new List<Klub>();
-
         public static List<Klub> Extent
         {
             get
@@ -187,9 +193,9 @@ namespace MAS_Final
             extent.Add(this);
         }
 
+        //Ustanowienie prezesa
         public void DodajPrezesa(Prezes prezes)
         {
-          
             if (Prezes != null)
             {
                 new Exception("Klub już ma prezesa");
@@ -204,6 +210,7 @@ namespace MAS_Final
             Prezes.Klub = this;
         }
 
+        //Usunięcie aktualnego prezesa ze stanowiska
         public void UsunPrezesa(Prezes prezes)
         {
             if (!Prezes.Equals(prezes))
@@ -213,6 +220,7 @@ namespace MAS_Final
             Prezes = null;
         }
 
+        //Ustanowienie głównego skauta
         public void DodajGlownegoSkauta(GlownySkaut glownySkaut)
         {
             if (GlownySkaut == glownySkaut)
@@ -228,6 +236,7 @@ namespace MAS_Final
             GlownySkaut = glownySkaut;
         }
 
+        //Usunięcie aktualnego głównego skauta ze stanowiska
         public void UsunGlownegoSkauta(GlownySkaut glownySkaut)
         {
             if (GlownySkaut != glownySkaut)
@@ -237,6 +246,7 @@ namespace MAS_Final
             GlownySkaut = null;
         }
 
+        //Zatrudnienie pracownika
         public void DodajPracownika(Pracownik pracownik)
         {
             if(pracownicy.Contains(pracownik))
@@ -256,6 +266,7 @@ namespace MAS_Final
             }
         }
 
+        //Zwolnienie pracownika
         public void UsunPracownika(Pracownik pracownik)
         {
             Type typ = typeof(Pracownik);
@@ -274,21 +285,14 @@ namespace MAS_Final
             }
         }
 
-    //    public void ZwolnijPracownika(Pracownik pracownik)
-    //    {
-    //        Type typ = typeof(Pracownik);
-
-    //        if(!pracownicy.Contains(pracownik) && Prezes != pracownik && GlownySkaut != pracownik)
-    //        {
-    //            throw new Exception("Nie znaleziono osoby");
-    //        }
-
-    //        List<Pracownik> extent = (List<Pracownik>)typ.GetProperty("Extent", BindingFlags.Static | BindingFlags.Public).GetValue(null, null);
-
-    //        pracownik.DataOdejscia = DateTime.Today;
-    //        pracownik.Klub = null;
-    //        pracownik.Pensja = 0;
-
-    //    }
+        //Usunięcie klubu z systemu, tożsame z usunięciem wszystkich pracowników
+        public void Remove()
+        {
+            extent.Remove(this);
+            wszyscyPracownicy.ExceptWith(pracownicy);
+            pracownicy.Clear();
+            Skaut.Extent.Clear();
+            Dyrektor.Extent.Clear();
+        }
     }
 }

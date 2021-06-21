@@ -5,6 +5,10 @@ using System.Text;
 namespace MAS_Final
 {
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca prezesa klubu
+    // <summary>
     public class Prezes : Pracownik
     {
         private DateTime poczatekKadencji;
@@ -16,12 +20,17 @@ namespace MAS_Final
             }
             set
             {
+                //Data musi być wcześniejsza niż obecna
+                if (value > DateTime.Now)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową datę");
+                }
                 poczatekKadencji = value;
             }
         }
 
+        //Obliczenie końca kadencjina podstawie daty rozpoczęcia kadencji i długości kadencji prezesa w klubie
         private DateTime koniecKadencji;
-
         public DateTime KoniecKadencji
         {
             get
@@ -30,8 +39,8 @@ namespace MAS_Final
             }
         }
 
+        //Lista przechowująca wszystkie decyzje w sprawie transferów zawodników podjęte przez prezesa 
         private List<Decyzja> decyzje;
-
         public List<Decyzja> Decyzje
         {
             get
@@ -73,6 +82,7 @@ namespace MAS_Final
             }
         }
 
+        //Stworzenie prezesa od zera
         public static Prezes DodajPrezesa(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, DateTime poczatekKadencji)
         {
             if (klub == null)
@@ -86,6 +96,7 @@ namespace MAS_Final
             return prezes;
         }
 
+        //Stworzenie prezesa na podstawie istniejącego obiektu
         public static Prezes DodajPrezesa(Pracownik pracownik, DateTime poczatekKadencji, double nowaPensja)
         {
             Klub klub = pracownik.Klub;
@@ -95,14 +106,17 @@ namespace MAS_Final
             return prezes;
         }
 
+        //Promocja skauta na głównego skauta
         public GlownySkaut AwansujSkauta(Skaut skaut, double pensja)
         {
             GlownySkaut glownySkaut = GlownySkaut.DodajGlownegoSkauta(skaut, this, DateTime.Now, pensja);
             return glownySkaut;
         }
 
+        //Podjęcie decyzji w sprawie zawodnika
         public Decyzja PodejmijDecyzje(Zawodnik zawodnik, TypDecyzji typ, String komentarz)
         {
+            //Decyzję można podjąć, jeśli wcześniej stworzono kosztorys
             if (zawodnik.Kosztorys == null)
             {
                 throw new Exception("Nnie sporządzono kosztorysu dla tego zawodnika");

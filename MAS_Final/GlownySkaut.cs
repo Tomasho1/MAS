@@ -5,6 +5,10 @@ using System.Text;
 namespace MAS_Final
 {
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca głównego skauta, czyli jednego ze skautów mianowanego przez prezesa
+    // <summary>
     public class GlownySkaut : Pracownik
     {
         private Prezes prezes;
@@ -29,6 +33,11 @@ namespace MAS_Final
             }
             set
             {
+                //Data musi być wcześniejsza niż obecna, ale nie może być wcześniejsza od daty zatrudnienia 
+                if (value > DateTime.Now || value < DataZatrudnienia)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową datę");
+                }
                 dataPromocji = value;
             }
         }
@@ -42,6 +51,7 @@ namespace MAS_Final
                 DataPromocji = dataPromocji;
         }
 
+        //Promocja skauta na głównego skauta 
         public static GlownySkaut DodajGlownegoSkauta(Skaut skaut, Pracownik prezes, DateTime dataPromocji, double nowaPensja)
         {
             Klub klub = skaut.Klub;
@@ -51,13 +61,15 @@ namespace MAS_Final
             return glownySkaut;
         }
 
+        //Zmiana statusu zawodnika
         public void ZmienStatusZawodnika(Zawodnik zawodnik, StatusZawodnika status)
         {
-            if (zawodnik.Status != Helper.GetEnumDescription(StatusZawodnika.PoObserwacji))
+            //Zmiana statusu zawodnika może nastąpić tylko wtedy, gdy posiada on domyślny status lub został skierowany do dalszej obserwacji
+            if (zawodnik.Status == Helper.GetEnumDescription(StatusZawodnika.PoObserwacji) || zawodnik.Status == Helper.GetEnumDescription(StatusZawodnika.DoDalszejObserwacji))
             {
-                throw new Exception("Nie możesz zmienić statusu tego zawodnika");
+                zawodnik.Status = Helper.GetEnumDescription(status);
             }
-            zawodnik.Status = Helper.GetEnumDescription(status);
+            else throw new Exception("Nie możesz zmienić statusu tego zawodnika");
         }
 
         public override bool Equals(object obj)

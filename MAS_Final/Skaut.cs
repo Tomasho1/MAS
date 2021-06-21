@@ -6,8 +6,13 @@ using System.Text;
 namespace MAS_Final
 {
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca obiekt decyzji podejmowanej przez prezesa w sprawie konkretnego zawodnika
+    // <summary>
     public class Skaut : Pracownik
     {
+        //Lista przechowująca regiony, którymi zajmuje się skaut. Regionem może być państwo lub kontynent. 
         private List<String> regiony;
         public List<String> Regiony
         {
@@ -20,9 +25,9 @@ namespace MAS_Final
             {
                 regiony = value;
             }
-
         }
 
+        //Lista klucz-wartość przechowująca raporty przygotowane przez skauta
         private List<KeyValuePair<Zawodnik, Raport>> raporty = new List<KeyValuePair<Zawodnik, Raport>>();
         public List<KeyValuePair<Zawodnik, Raport>> Raporty
         {
@@ -38,8 +43,8 @@ namespace MAS_Final
 
         }
 
+        //Statyczna lista przechowująca wszystkie obiekty klasy
         private static List<Skaut> extent = new List<Skaut>();
-
         public static List<Skaut> Extent
         {
             get
@@ -83,6 +88,7 @@ namespace MAS_Final
             extent.Add(this);
         }
 
+        //Stworzenie skauta od zera
         public static Skaut DodajSkauta(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<String> regiony)
         {
             if (klub == null)
@@ -95,6 +101,7 @@ namespace MAS_Final
             return skaut;
         }
 
+        //Stworzenie skauta na podstawie istniejącego obiektu
         public static Skaut DodajSkauta(Pracownik pracownik, List<String> regiony, double nowaPensja)
         {
             Klub klub = pracownik.Klub;
@@ -103,11 +110,13 @@ namespace MAS_Final
             return skaut;
         }
 
+        //Dodanie raportu do listy
         public void DodajRaport(Zawodnik zawodnik, Raport raport)
         {
             raporty.Add(new KeyValuePair<Zawodnik, Raport>(zawodnik, raport));
         }
 
+        //Stworzenie raportu
         public Raport StworzRaport(Zawodnik zawodnik, Mecz mecz, String komentarz)
         {
             Raport raport = new Raport(this, zawodnik, mecz, komentarz);

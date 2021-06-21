@@ -5,15 +5,19 @@ using System.Text;
 
 namespace MAS_Final
 {
+    //Enum przechowujący możliwe wartości dla właściwości Typ
     public enum TypDecyzji
     {
         [Description("Zgoda na transfer")] Zgoda,
         [Description("Odrzucenie transferu")] Odrzucenie
     }
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca decyzję podejmowaną przez prezesa w sprawie konkretnego zawodnika
+    // <summary>
     public class Decyzja
     {
-
         private static int idOstatniaDecyzja = 0;
 
         private int idDecyzja;
@@ -30,7 +34,6 @@ namespace MAS_Final
         }
 
         private Prezes prezes;
-
         public Prezes Prezes
         {
             get
@@ -44,7 +47,6 @@ namespace MAS_Final
         }
 
         private Zawodnik zawodnik;
-
         public Zawodnik Zawodnik
         {
             get
@@ -59,7 +61,6 @@ namespace MAS_Final
 
 
         private String typ;
-
         public String Typ
         {
             get
@@ -73,7 +74,6 @@ namespace MAS_Final
         }
 
         private String komentarz;
-
         public String Komentarz
         {
             get
@@ -86,8 +86,8 @@ namespace MAS_Final
             }
         }
 
+        //Statyczna lista przechowująca wszystkie obiekty klasy
         private static List<Decyzja> extent = new List<Decyzja>();
-
         public static List<Decyzja> Extent
         {
             get

@@ -4,9 +4,14 @@ using System.Collections.Generic;
 namespace MAS_Final
 {
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca raport tworzony przez skauta po obejrzeniu zawodnika w akcji
+    // <summary>
     public class Raport
     {
         private static int idOstatniRaport = 0;
+
         private int idRaport;
         public int IdRaport
         {
@@ -21,7 +26,6 @@ namespace MAS_Final
         }
 
         private Zawodnik zawodnik;
-
         public Zawodnik Zawodnik
         {
             get
@@ -35,7 +39,6 @@ namespace MAS_Final
         }
 
         private Mecz mecz;
-
         public Mecz Mecz 
         {
             get
@@ -62,7 +65,6 @@ namespace MAS_Final
         }
 
         private Skaut skaut;
-
         public Skaut Skaut
         {
             get
@@ -75,8 +77,8 @@ namespace MAS_Final
             }
         }
 
+        //Statyczna lista przechowująca wszystkie obiekty klasy
         private static List<Raport> extent = new List<Raport>();
-
         public static List<Raport> Extent
         {
             get
@@ -97,6 +99,7 @@ namespace MAS_Final
             Skaut = skaut;
             Mecz = mecz;
             Komentarz = komentarz;
+            extent.Add(this);
             zawodnik.DodajRaport(skaut, this);
             skaut.DodajRaport(zawodnik, this);
         }

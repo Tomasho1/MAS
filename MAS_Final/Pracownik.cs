@@ -5,6 +5,10 @@ using System.Text;
 namespace MAS_Final
 {
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca abstrakcję pracownika
+    // <summary>
     public abstract class Pracownik
     {
         private static int idOstatniPracownik = 0;
@@ -83,14 +87,22 @@ namespace MAS_Final
             }
             set
             {
+                //Data musi być wcześniejsza niż obecna
+                if(value > DateTime.Now)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową datę");
+                }
                 dataUrodzenia = value;
             }
         }
+
+        //Obliczenie wieku na podstawie daty urodzenia
         private int wiek;
         public int Wiek
         {
             get
             {
+
                 DateTime now = DateTime.Today;
                 wiek = now.Year - this.DataUrodzenia.Year;
                 if (now < DataUrodzenia.AddYears(wiek))
@@ -110,40 +122,23 @@ namespace MAS_Final
             }
             set
             {
+                //Data musi być wcześniejsza niż obecna
+                if (value > DateTime.Now)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową datę");
+                }
                 dataZatrudnienia = value;
             }
         }
 
-        //private DateTime? dataOdejscia;
-        //public DateTime? DataOdejscia
-        //{
-        //    get
-        //    {
-        //        return dataOdejscia;
-        //    }
-        //    set
-        //    {
-        //        dataOdejscia = value;
-        //    }
-        //}
-
+        //Obliczenie stażu w klubie na podstawie daty zatrudnienia 
         private int stazWKlubie;
         public int StazWKlubie
         {
             get
             {
                 DateTime now = DateTime.Today;
-                //if (dataOdejscia != null)
-                //{
-                //    stazWKlubie = dataOdejscia.Value.Year - DataZatrudnienia.Year;
-                //    if (dataOdejscia < DataZatrudnienia.AddYears(stazWKlubie))
-                //    {
-                //        stazWKlubie--;
-                //    }
-                //    return stazWKlubie;
-                //}
-
-                    stazWKlubie = now.Year - DataZatrudnienia.Year;
+                stazWKlubie = now.Year - DataZatrudnienia.Year;
                     if (now < DataZatrudnienia.AddYears(stazWKlubie))
                     {
                         stazWKlubie--;
@@ -151,7 +146,6 @@ namespace MAS_Final
                     return stazWKlubie;
             }
         }
-
         private double pensja;
         public double Pensja
         {

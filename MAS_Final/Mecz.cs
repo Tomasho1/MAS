@@ -5,6 +5,10 @@ using System.Text;
 namespace MAS_Final
 {
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca mecz, na który udał się skaut
+    // <summary>
     public class Mecz
     {
         private static int idOstatniMecz = 0;
@@ -31,6 +35,11 @@ namespace MAS_Final
             }
             set
             {
+                //Data musi być wcześniejsza niż obecna
+                if (value > DateTime.Now)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową datę");
+                }
                 dataRozegrania = value;
             }
         }
@@ -74,8 +83,8 @@ namespace MAS_Final
             }
         }
 
+        //Statyczna lista przechowująca wszystkie obiekty klasy
         private static List<Mecz> extent = new List<Mecz>();
-
         public static List<Mecz> Extent
         {
             get
@@ -87,7 +96,6 @@ namespace MAS_Final
                 extent = value;
             }
         }
-
         public Mecz(DateTime dataRozegrania, string gospodarz, string gosc, string wynik)
         {
             idOstatniMecz++;

@@ -30,50 +30,61 @@ namespace GUI
 
             Skaut = skaut;
 
-            var obserwowani = skaut.Raporty.Select(x => x.Key).Distinct().ToList();
+            var obserwowani = skaut.Raporty.Select(x => x.Key).OrderBy(p => p.IdZawodnik).Distinct().ToList();
 
             var dt = new DataTable();
             dt.Columns.Add("Id", typeof(int));
             dt.Columns.Add("Imię", typeof(string));
             dt.Columns.Add("Nazwisko", typeof(string));
             dt.Columns.Add("Narodowość", typeof(string));
+            dt.Columns.Add("Wiek", typeof(int));
 
             label1.Text = $"Zawodnicy obserwowani przez {skaut.Imie} {skaut.Nazwisko}";
+
             foreach (Zawodnik zawodnik in obserwowani)
             {
-                dt.Rows.Add(zawodnik.IdZawodnik, zawodnik.Imie, zawodnik.Nazwisko, zawodnik.Narodowosc);
+                dt.Rows.Add(zawodnik.IdZawodnik, zawodnik.Imie, zawodnik.Nazwisko, zawodnik.Narodowosc, zawodnik.Wiek);
             }
 
             dataGridView1.DataSource = dt;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            //dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-        }
-
-        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            SzczegolyZawodnika f2 = new SzczegolyZawodnika(Skaut);
-
-            int idZawodnik = (int)dataGridView1.CurrentRow.Cells[0].Value;
-            Zawodnik zawodnik = Zawodnik.Extent.FirstOrDefault(z => z.IdZawodnik == idZawodnik);
-
-            f2.label8.Text = $"Profil {zawodnik.Imie} {zawodnik.Nazwisko}";
-
-            f2.textBox1.Text = zawodnik.Imie;
-            f2.textBox2.Text = zawodnik.Nazwisko;
-            f2.textBox3.Text = zawodnik.Narodowosc;
-            f2.textBox4.Text = zawodnik.Wiek.ToString();
-            f2.textBox5.Text = zawodnik.AktualnyKlub;
-            f2.textBox6.Text = zawodnik.Wartosc.ToString();
-            f2.textBox7.Text = zawodnik.Status;
-
-            Hide();
-            f2.ShowDialog();
-            Close();
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             Skauci f1 = new Skauci();
+            Hide();
+            f1.ShowDialog();
+            Close();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Zawodnicy f1 = new Zawodnicy();
+            Hide();
+            f1.ShowDialog();
+            Close();
+        }
+
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            SzczegolyZawodnika f1 = new SzczegolyZawodnika(Skaut);
+
+            int idZawodnik = (int)dataGridView1.CurrentRow.Cells[0].Value;
+            Zawodnik zawodnik = Zawodnik.Extent.FirstOrDefault(z => z.IdZawodnik == idZawodnik);
+
+            f1.label8.Text = $"Profil {zawodnik.Imie} {zawodnik.Nazwisko}";
+
+            f1.textBox1.Text = zawodnik.Imie;
+            f1.textBox2.Text = zawodnik.Nazwisko;
+            f1.textBox3.Text = zawodnik.Narodowosc;
+            f1.textBox8.Text = zawodnik.Pozycja;
+            f1.textBox4.Text = zawodnik.Wiek.ToString();
+            f1.textBox9.Text = $"{zawodnik.DataUrodzenia.Day}.{zawodnik.DataUrodzenia.Month}.{zawodnik.DataUrodzenia.Year}";
+            f1.textBox5.Text = zawodnik.AktualnyKlub;
+            f1.textBox6.Text = zawodnik.Wartosc.ToString();
+            f1.textBox7.Text = zawodnik.Status;
+
             Hide();
             f1.ShowDialog();
             Close();

@@ -3,53 +3,57 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class Skauci : Form
+    public partial class Zawodnicy : Form
     {
-        public Skauci()
+        public Zawodnicy()
         {
             InitializeComponent();
-            label1.Text = "Skauci pracujący w klubie";
+
             var dt = new DataTable();
             dt.Columns.Add("Id", typeof(int));
             dt.Columns.Add("Imię", typeof(string));
             dt.Columns.Add("Nazwisko", typeof(string));
             dt.Columns.Add("Narodowość", typeof(string));
-            dt.Columns.Add("Wiek", typeof(int));
 
-            var extent = Skaut.Extent.OrderBy(p => p.IdPracownik);
+            List<Zawodnik> zawodnicy = new List<Zawodnik>();
 
-            foreach (Skaut skaut in extent)
+            foreach (Raport raport in Raport.Extent)
             {
-                dt.Rows.Add(skaut.IdPracownik, skaut.Imie, skaut.Nazwisko, skaut.Narodowosc, skaut.Wiek);
+                var zawodnik = raport.Zawodnik;
+                zawodnicy.Add(zawodnik);
+            }
+
+            zawodnicy = zawodnicy.OrderBy(p => p.IdZawodnik).Distinct().ToList();
+
+            foreach (Zawodnik zawodnik in zawodnicy)
+            {
+                dt.Rows.Add(zawodnik.IdZawodnik, zawodnik.Imie, zawodnik.Nazwisko, zawodnik.Narodowosc);
             }
 
             dataGridView1.DataSource = dt;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            Zawodnicy f1 = new Zawodnicy();
+            Skauci f1 = new Skauci();
             Hide();
             f1.ShowDialog();
             Close();
         }
-
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            int idSkaut = (int)dataGridView1.CurrentRow.Cells[0].Value;
-            Skaut skaut = Skaut.Extent.FirstOrDefault(s => s.IdPracownik == idSkaut);
+            int idZawodnik = (int)dataGridView1.CurrentRow.Cells[0].Value;
+            Zawodnik zawodnik = Zawodnik.Extent.FirstOrDefault(s => s.IdZawodnik == idZawodnik);
 
-            ZawodnicySkauta f1 = new ZawodnicySkauta(skaut);
+            SkauciZawodnika f1 = new SkauciZawodnika(zawodnik);
             Hide();
             f1.ShowDialog();
             Close();

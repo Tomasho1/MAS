@@ -30,22 +30,25 @@ namespace GUI
             Skaut = skaut;
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
-            ZawodnicySkauta f3 = new ZawodnicySkauta(Skaut);
+            ZawodnicySkauta f1 = new ZawodnicySkauta(Skaut);
             Hide();
-            f3.ShowDialog();
+            f1.ShowDialog();
             Close();
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             Skauci f1 = new Skauci();
+            Hide();
+            f1.ShowDialog();
+            Close();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Zawodnicy f1 = new Zawodnicy();
             Hide();
             f1.ShowDialog();
             Close();

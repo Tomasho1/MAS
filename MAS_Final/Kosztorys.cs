@@ -4,6 +4,10 @@ using System.Collections.Generic;
 namespace MAS_Final
 {
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca kosztorys tworzony dla konkretnego zawodnika przez dyrektora sportowego
+    // <summary>
     public class Kosztorys
     {
 
@@ -31,6 +35,11 @@ namespace MAS_Final
             }
             set
             {
+                //Wartość musi być większa od zera
+                if(value <= 0)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową wartość");
+                }
                 szacowanaCena = value;
             }
         }
@@ -44,12 +53,16 @@ namespace MAS_Final
             }
             set
             {
+                //Wartość musi być większa od zera
+                if (value <= 0)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową wartość");
+                }
                 szacowanaPensja = value;
             }
         }
 
         private Zawodnik zawodnik;
-
         public Zawodnik Zawodnik
         {
             get
@@ -63,7 +76,6 @@ namespace MAS_Final
         }
 
         private Dyrektor dyrektor;
-
         public Dyrektor Dyrektor
         {
             get
@@ -76,6 +88,7 @@ namespace MAS_Final
             }
         }
 
+        //Statyczna lista przechowująca wszystkie obiekty klasy
         private static List<Kosztorys> extent = new List<Kosztorys>();
         public static List<Kosztorys> Extent
         {

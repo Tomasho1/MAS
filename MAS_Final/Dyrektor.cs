@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace MAS_Final
 {
-    public enum TypDyrektora { 
-        Sportowy, 
-        Transferowy
+    //Enum przechowujący możliwe wartości dla właściwości Typ
+    public enum TypDyrektora {
+        [Description("Sportowy")] Sportowy,
+        [Description("ds. Transferów")] Transferowy
     }
 
     [Serializable]
+
+    // <summary>
+    // Klasa realizująca dziedziczenie overlapping pomiędzy Dyrektorem Sportowym i Dyrektorem ds. Transferów
+    // <summary>
     public class Dyrektor : Pracownik
     {
         private bool dyrektorSportowy;
@@ -37,7 +43,7 @@ namespace MAS_Final
                 dyrektorTransferowy = value;
             }
         }
-
+        //Lista przechowująca wszystkie kosztorysy stworzone przez dyrektora
         private List<Kosztorys> kosztorysy = new List<Kosztorys>();
         public List<Kosztorys> Kosztorysy
         {
@@ -51,8 +57,8 @@ namespace MAS_Final
             }
         }
 
+        //Statyczna lista przechowująca wszystkie obiekty klasy
         private static List<Dyrektor> extent = new List<Dyrektor>();
-
         public static List<Dyrektor> Extent
         {
             get
@@ -64,7 +70,6 @@ namespace MAS_Final
                 extent = value;
             }
         }
-
         private Dyrektor(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska) : base(klub, imie, nazwisko, narodowosc, dataUrodzenia, dataZatrudnienia, pensja)
         {
             if (stanowiska.Contains(TypDyrektora.Sportowy))
@@ -125,6 +130,7 @@ namespace MAS_Final
             extent.Add(this);
         }
 
+        //Stworzenie dyrektora od zera
         public static Dyrektor DodajDyrektora(Klub klub, String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, DateTime dataZatrudnienia, double pensja, List<TypDyrektora> stanowiska)
         {
             if (klub == null)
@@ -136,7 +142,7 @@ namespace MAS_Final
             klub.DodajPracownika(dyrektor);
             return dyrektor;
         }
-
+        //Stworzenie dyrektora na podstawie istniejącego obiektu
         public static Dyrektor DodajDyrektora(Pracownik pracownik, List<TypDyrektora> stanowiska, double nowaPensja)
         {
             Klub klub = pracownik.Klub;
@@ -145,22 +151,26 @@ namespace MAS_Final
             return dyrektor;
         }
 
+        //Wydanie opinii na temat konkretnego zawodnika
         public void WydajOpinie(Zawodnik zawodnik, Opinia opinia)
         {
-            if (zawodnik.Status == Helper.GetEnumDescription(StatusZawodnika.ZawieszenieObserwacji))
+            //Opinię można wydać tylko dla zawodników zarekomendowanych przez głównego skauta
+            if (zawodnik.Status == Helper.GetEnumDescription(StatusZawodnika.Zarekomendowany))
             {
-                throw new Exception("Nie możesz wydać opinii dla tego zawodnika");
+                zawodnik.Opinia = Helper.GetEnumDescription(opinia);
             }
 
-            zawodnik.Opinia = Helper.GetEnumDescription(opinia);
+            else throw new Exception("Nie możesz wydać opinii dla tego zawodnika");      
         }
+
         public Kosztorys StworzKosztorys(Zawodnik zawodnik, double szacowanaCena, double szacowanaPensja)
         {
+            //Tylko dyrektor sportowy ma prawo stworzyć kosztorys
             if(!DyrektorSportowy)
             {
                 throw new Exception("Tylko dyrektor sportowy może tworzyć kosztorys");
             }
-
+            //Kosztorys dla zawodnika jest tworzony po wydaniu pozytywnej opinii przez dyrektora ds. transferów
             if (zawodnik.Opinia != Helper.GetEnumDescription(Opinia.Pozytywna))
             {
                 throw new Exception("Zawodnik nie otrzymał pozytywnej opinii dyrektora ds. transferów");

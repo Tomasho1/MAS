@@ -7,6 +7,7 @@ using System.Text;
 
 namespace MAS_Final
 {
+    //Enum przechowujący możliwe wartości dla właściwości Status
     public enum StatusZawodnika
     {
         [Description("Po obserwacji")] PoObserwacji,
@@ -15,6 +16,7 @@ namespace MAS_Final
         Zarekomendowany
     }
 
+    //Enum przechowujący możliwe wartości dla właściwości Opinia
     public enum Opinia
     {
         [Description("Zaopiniowany pozytywnie")] Pozytywna,
@@ -22,6 +24,10 @@ namespace MAS_Final
     }
 
     [Serializable]
+
+    // <summary>
+    // Klasa reprezentująca obiekt decyzji podejmowanej przez prezesa w sprawie konkretnego zawodnika
+    // <summary>
     public class Zawodnik
     {
 
@@ -79,6 +85,20 @@ namespace MAS_Final
             }
         }
 
+
+        private string pozycja;
+        public string Pozycja
+        {
+            get
+            {
+                return pozycja;
+            }
+            set
+            {
+                pozycja = value;
+            }
+        }
+
         private DateTime dataUrodzenia;
         public DateTime DataUrodzenia
         {
@@ -88,9 +108,16 @@ namespace MAS_Final
             }
             set
             {
+                //Data musi być wcześniejsza niż obecna
+                if (value > DateTime.Now)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową datę");
+                }
                 dataUrodzenia = value;
             }
         }
+
+        //Obliczenie wieku na podstawie daty urodzenia
         private int wiek;
         public int Wiek
         {
@@ -127,6 +154,11 @@ namespace MAS_Final
             }
             set
             {
+                //Wartość musi być większa od zera
+                if(value <= 0)
+                {
+                    throw new Exception("Wprowadzono nieprawidłową wartość");
+                }
                 wartosc = value;
             }
         }
@@ -160,7 +192,6 @@ namespace MAS_Final
 
 
         private Kosztorys? kosztorys;
-
         public Kosztorys? Kosztorys
         {
             get
@@ -174,7 +205,6 @@ namespace MAS_Final
         }
 
         private Decyzja? decyzja;
-
         public Decyzja? Decyzja
         {
             get
@@ -187,6 +217,7 @@ namespace MAS_Final
             }
         }
 
+        //Lista klucz-wartość przechowująca raporty przygotowane na temat zawodnika 
         private List<KeyValuePair<Skaut, Raport>> raporty = new List<KeyValuePair<Skaut, Raport>>();
         public List<KeyValuePair<Skaut, Raport>> Raporty
         {
@@ -201,8 +232,9 @@ namespace MAS_Final
             }
         }
 
-        public static List<Zawodnik> extent = new List<Zawodnik>();
 
+        //Statyczna lista przechowująca wszystkie obiekty klasy
+        public static List<Zawodnik> extent = new List<Zawodnik>();
         public static List<Zawodnik> Extent
         {
             get
@@ -215,7 +247,7 @@ namespace MAS_Final
             }
         }
 
-        public Zawodnik(String imie, String nazwisko, String narodowosc, DateTime dataUrodzenia, String aktualnyKlub, double wartosc)
+        public Zawodnik(String imie, String nazwisko, String narodowosc, String pozycja, DateTime dataUrodzenia, String aktualnyKlub, double wartosc)
         {
             
             idOstatniZawodnik++;
@@ -223,6 +255,7 @@ namespace MAS_Final
             Imie = imie;
             Nazwisko = nazwisko;
             Narodowosc = narodowosc;
+            Pozycja = pozycja;
             DataUrodzenia = dataUrodzenia;
             AktualnyKlub = aktualnyKlub;
             Wartosc = wartosc;
@@ -230,12 +263,14 @@ namespace MAS_Final
             extent.Add(this);
         }
 
+        //Znalezienie zawodników o szukanym statusie
         public List<Zawodnik> ZnajdzZawodnikowPoStatusie(StatusZawodnika status)
         {
             var lista = extent.Where(p => p.Status == status.ToString()).ToList();
             return lista;
         }
 
+        //Dodanie raportu do listy
         public void DodajRaport(Skaut skaut, Raport raport)
         {
             raporty.Add(new KeyValuePair<Skaut, Raport>(skaut, raport));
